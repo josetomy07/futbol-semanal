@@ -4,6 +4,8 @@ import { Head, Link, usePage} from '@inertiajs/react';
 
 export default function Dashboard() {
 
+    const user = usePage().props.auth.user;
+
     const { auth } = usePage().props;
 
 
@@ -11,8 +13,16 @@ export default function Dashboard() {
         <AuthenticatedLayout>
             <Head title="Dashboard" />
 
+            <div className="py-4">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="p-6 text-gray-900 dark:text-gray-100">Bienvenido {user.name}</div>
+                    </div>
+                </div>
+            </div>
+
             {auth.roles.includes('superadmin') && (
-                    <div className="container py-12">
+                    <div className="container py-4">
                         <div className="row">
                             <div className="col-sm-4 mb-3 mb-sm-0">
                                 <div className="card text-center">
@@ -26,7 +36,7 @@ export default function Dashboard() {
                                 <div className="card text-center mb-3">
                                     <div className="card-body">
                                         <h5 className="card-title">Usuarios</h5>
-                                        <PrimaryButton>User</PrimaryButton>
+                                        <PrimaryButton><Link href={route('Usuarios.index')}>User</Link></PrimaryButton>
                                     </div>
                                 </div>
                             </div>
@@ -42,13 +52,7 @@ export default function Dashboard() {
                     </div>
             )}
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in!</div>
-                    </div>
-                </div>
-            </div>
+
         </AuthenticatedLayout>
     );
 }
