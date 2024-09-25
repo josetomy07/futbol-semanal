@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('/dashboard')->group( function(){
     Route::resource('Roles', RolesController::class);
-    Route::resource('usuarios', UserController::class);
+    Route::resource('Usuarios', UserController::class);
     Route::resource('post', PostController::class);
 });
 
