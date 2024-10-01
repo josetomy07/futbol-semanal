@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import InputError from '@/Components/InputError'
 import InputLabel from '@/Components/InputLabel'
 import PrimaryButton from '@/Components/PrimaryButton'
@@ -5,7 +6,12 @@ import TextInput from '@/Components/TextInput'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, Link, useForm } from '@inertiajs/react'
 
-const crear = () => {
+
+
+
+const crear = ({roles}) => {
+
+    const [rol, setRol] = useState();
 
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
@@ -17,7 +23,7 @@ const crear = () => {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('Usuarios.store'), {
+        post(route('Usuarios.store', {rol}), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
@@ -39,7 +45,7 @@ const crear = () => {
 
                 <form onSubmit={submit}>
                     <div className="mt-4 ml-4 mr-4">
-                        <InputLabel htmlFor="name" value="Name" className='ml-4 mr-4' />
+                        <InputLabel htmlFor="name" value="Name" className='ml-1' />
 
                         <TextInput
                             id="name"
@@ -56,7 +62,7 @@ const crear = () => {
                     </div>
 
                     <div className="mt-4 ml-4 mr-4">
-                        <InputLabel htmlFor="email" value="Email" className='ml-4 mr-4' />
+                        <InputLabel htmlFor="email" value="Email" className='ml-1' />
 
                         <TextInput
                             id="email"
@@ -73,7 +79,7 @@ const crear = () => {
                     </div>
 
                     <div className="mt-4 ml-4 mr-4">
-                        <InputLabel htmlFor="password" value="Password" className='ml-4 mr-4' />
+                        <InputLabel htmlFor="password" value="Password" className='ml-1' />
 
                         <TextInput
                             id="password"
@@ -90,7 +96,7 @@ const crear = () => {
                     </div>
 
                     <div className="mt-4 ml-4 mr-4">
-                        <InputLabel htmlFor="password_confirmation" value="Confirm Password" className='ml-4 mr-4' />
+                        <InputLabel htmlFor="password_confirmation" value="Confirm Password" className='ml-1' />
 
                         <TextInput
                             id="password_confirmation"
@@ -104,6 +110,25 @@ const crear = () => {
                         />
 
                         <InputError message={errors.password_confirmation} className="mt-2" />
+                    </div>
+
+                    <div className="mt-4 ml-4 mr-4">
+                        <label htmlFor="rol" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione Opción</label>
+
+                        <select
+                            value={rol}
+                            onChange={(e) => setRol(e.target.value)}
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        >
+
+                            <option>Seleccione Rol</option>
+                            {roles.map(role => (
+                                <option key={role.id} value={role.name}>{role.name}</option>
+                            ))}
+
+                        </select>
+
+                        <InputError message={errors.role} className="mt-2" />
                     </div>
 
                     <div className="flex items-center justify-center mt-4">

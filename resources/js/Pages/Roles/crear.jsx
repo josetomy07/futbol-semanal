@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
@@ -8,12 +8,24 @@ import InputError from '@/Components/InputError';
 
 const crear = ({permission}) => {
 
+    const [permiso, setPermiso] = useState([]);
+    const addPermiso = (newPermiso) => {
+        setPermiso([...permiso, newPermiso]);
+    };
 
-    const [name, setName] = useState('');
+
+    const { data, setData, post, processing, errors} = useForm({
+        name: '',
+    });
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        Inertia.post('/permissions', { name });
+
+       // console.log(data, permiso)
+
+        post(route('Roles.store', {permiso}))
+
     };
 
 
@@ -39,33 +51,41 @@ const crear = ({permission}) => {
                         <TextInput
                             id="name"
                             name="name"
-                            value={name}
+                            value={data.name}
                             className="ml-4 mr-4 mt-1 block w-full"
                             autoComplete="name"
                             isFocused={true}
-                            onChange={(e) => setName(e.target.value)}
+                            onChange={(e) => setData('name', e.target.value)}
                             required
                         />
-                        <InputError  className="mt-2" />
+                        <InputError message={errors.name} className="mt-2" />
 
                         <div className="py-10 ml-4">
                             <h3 className="mb-4 font-semibold text-gray-900 dark:text-white">Permisos</h3>
-                                <br/>
 
                                 {permission.map(permissions => (
-                                    <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white" key={permissions.id}>
-                                        <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600" >
-                                            <div class="flex items-center ps-3">
-                                                <input id="vue-checkbox-list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
-                                                <label for="vue-checkbox-list" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" >{permissions.name}</label>
+                                    <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white" key={permissions.id}>
+                                        <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600" >
+                                            <div className="flex items-center ps-3">
+                                               <label>
+                                                    <input
+                                                        id="permiso"
+                                                        name="permiso"
+                                                        type="checkbox"
+                                                        value={permissions.id}
+                                                        onChange={(e) => addPermiso(permissions.id, e.target.value.split(','))}
+                                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                                    />
+                                                    {permissions.name}
+                                                </label>
+                                                <InputError message={errors.permiso} className="mt-2" />
                                             </div>
                                         </li>
                                     </ul>
                                 ))}
-                                <br/>
                         </div>
                     </div>
-                    <button type="submit"> enviar</button>
+                    <button type="submit" disabled={processing}> enviar</button>
                 </form>
             </div>
         </div>

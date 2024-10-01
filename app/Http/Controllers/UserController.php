@@ -12,13 +12,11 @@ use Inertia\Inertia;
 use Illuminate\Validation\Rules;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Arr;
-use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
-
-
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -38,10 +36,8 @@ class UserController extends Controller
     public function index()
     {
         //dd('inner list');
-        $data = User::all();
-        $roles = Role::all();
-
-        return Inertia::render('Usuarios/index', compact('data', 'roles'));
+        $data = User::with('roles')->get();
+        return Inertia::render('Usuarios/index', ['data' => $data]);
     }
 
     /**
@@ -49,31 +45,28 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::pluck('name','name')->all();
-
-        return Inertia::render('Usuarios/crear',compact('roles'));
+        $roles = Role::all();
+        return Inertia::render('Usuarios/crear', compact('roles'));
     }
+
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function stor(Request $request)
-    {
-        //
-    }
-
-/**
      * Handle an incoming registration request.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'rol' => 'required|string|exists:roles,name',
         ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        };
 
         $user = User::create([
             'name' => $request->name,
@@ -81,18 +74,14 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
-
+       // event(new Registered($user));
+        $user->assignRole($request->rol);
         //Auth::login($user);
 
         //return redirect(route('dashboard', absolute: false));
 
         return redirect()->route('Usuarios.index');
     }
-
-
-
-
 
 
     /**
@@ -108,15 +97,42 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::find($id);
+        //$roles = Role::pluck('name','name')->all();
+        $roles = Role::all();
+        //$userRoles = $user->roles->pluck('name','name')->all();
+        $userRoles = $user->roles->pluck('name')->toArray();
+        return Inertia::render('Usuarios/editar', compact('user','roles','userRoles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$id,
+            'password' => 'confirmed', Rules\Password::defaults(),
+            'roles' => 'required'
+        ]);
+
+
+        $input = $request->all();
+        if(!empty($input['password'])){
+            $input['password'] = Hash::make($input['password']);
+        }else{
+            $input = Arr::except($input,array('password'));
+        }
+    //dd($input);
+
+        $user = User::find($id);
+        $user->update($input);
+        DB::table('model_has_roles')->where('model_id',$id)->delete();
+
+        $user->assignRole($request->input('roles'));
+
+        return redirect()->route('Usuarios.index');
     }
 
     /**

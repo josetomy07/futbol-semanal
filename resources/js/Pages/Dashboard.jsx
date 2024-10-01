@@ -2,16 +2,14 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage} from '@inertiajs/react';
 
-export default function Dashboard() {
+export default function Dashboard({roles}) {
 
     const user = usePage().props.auth.user;
-
     const { auth } = usePage().props;
-
 
     return (
         <AuthenticatedLayout>
-            <Head title="Dashboard" />
+            <Head title="Layout" />
 
             <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
