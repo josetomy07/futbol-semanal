@@ -37,7 +37,7 @@ class UserController extends Controller
     {
         //dd('inner list');
         $data = User::with('roles')->get();
-        return Inertia::render('Usuarios/index', ['data' => $data]);
+        return Inertia::render('Usuarios/Administrador/index', ['data' => $data]);
     }
 
     /**
@@ -46,7 +46,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return Inertia::render('Usuarios/crear', compact('roles'));
+        return Inertia::render('Usuarios/Administrador/crear', compact('roles'));
     }
 
 
@@ -80,7 +80,7 @@ class UserController extends Controller
 
         //return redirect(route('dashboard', absolute: false));
 
-        return redirect()->route('Usuarios.index');
+        return redirect()->route('Administrador.index');
     }
 
 
@@ -102,7 +102,7 @@ class UserController extends Controller
         $roles = Role::all();
         //$userRoles = $user->roles->pluck('name','name')->all();
         $userRoles = $user->roles->pluck('name')->toArray();
-        return Inertia::render('Usuarios/editar', compact('user','roles','userRoles'));
+        return Inertia::render('Usuarios/Administrador/editar', compact('user','roles','userRoles'));
     }
 
     /**
@@ -132,7 +132,7 @@ class UserController extends Controller
 
         $user->assignRole($request->input('roles'));
 
-        return redirect()->route('Usuarios.index');
+        return redirect()->route('Administrador.index');
     }
 
     /**

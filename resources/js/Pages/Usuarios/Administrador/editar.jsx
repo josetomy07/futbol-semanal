@@ -7,7 +7,6 @@ import PrimaryButton from '@/Components/PrimaryButton';
 
 const editar = ({user, roles, userRoles}) => {
 
-    console.log(user)
     const { data, setData, put, reset } = useForm({
         name: user.name,
         email: user.email,
@@ -19,7 +18,7 @@ const editar = ({user, roles, userRoles}) => {
     const submit = (e) => {
         e.preventDefault();
 
-        put(route('Usuarios.update', user.id), {
+        put(route('Administrador.update', user.id), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
@@ -30,8 +29,8 @@ const editar = ({user, roles, userRoles}) => {
         <Head title="Editar Usuarios" />
 
         <div className="py-5 ml-3">
-            <button type="button" className="inline-flex ml-4 items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-                <Link href={route('Usuarios.index')}>Back</Link>
+            <button type="button" className="ml-4 items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                <Link href={route('Administrador.index')}><i className="fa-solid fa-left-long"></i></Link>
             </button>
         </div>
 

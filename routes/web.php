@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AlquilerController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PrediosController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UserController;
@@ -30,8 +32,12 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('/dashboard')->group( function(){
     Route::resource('Roles', RolesController::class);
-    Route::resource('Usuarios', UserController::class);
+    Route::resource('Usuarios/Administrador', UserController::class);
     Route::resource('post', PostController::class);
+    Route::resource('Equipo', PrediosController::class);
 });
+
+Route::post('/Equipo', [PrediosController::class, 'nombrePredio']);
+
 
 require __DIR__.'/auth.php';

@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import InputError from '@/Components/InputError'
-import InputLabel from '@/Components/InputLabel'
-import PrimaryButton from '@/Components/PrimaryButton'
-import TextInput from '@/Components/TextInput'
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
-import { Head, Link, useForm } from '@inertiajs/react'
+import React, { useState } from 'react';
+import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
+import PrimaryButton from '@/Components/PrimaryButton';
+import TextInput from '@/Components/TextInput';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, Link, useForm } from '@inertiajs/react';
 
 
 
@@ -23,7 +23,7 @@ const crear = ({roles}) => {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('Usuarios.store', {rol}), {
+        post(route('Administrador.store', {rol}), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
@@ -38,7 +38,7 @@ const crear = ({roles}) => {
                 <div className="flex items-center justify-between md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white dark:bg-gray-900">
                     < div className="sm:col-span-3">
                         <button type="button" className="inline-flex ml-4 items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-                            <Link href={route('Usuarios.index')}>Back</Link>
+                            <Link href={route('Administrador.index')}>Back</Link>
                         </button>
                     </div>
                 </div>
