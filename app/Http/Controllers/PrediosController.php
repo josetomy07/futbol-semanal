@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Predios;
 use App\Http\Requests\StorePrediosRequest;
 use App\Http\Requests\UpdatePrediosRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+
 
 class PrediosController extends Controller
 {
@@ -15,27 +17,7 @@ class PrediosController extends Controller
      */
     public function index()
     {
-        $ciudad = Predios::select('localidad')->distinct()->get();
-        $predio = Predios::where('localidad', 'Cinco-Salto')->get();
-        return Inertia::render('Usuarios/Equipo/IndexSoli', compact('ciudad', 'predio'));
-    }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function nombrePredio(Request $request)
-    {
-
-        $ciudad = $request->all();
-        $ciudades = Predios::where('localidad', $ciudad)->get();
-
-       // return Inertia::render('Usuarios/Equipo/IndexSoli', [
-     //    'mensaje' => $ciudades
-       // ]);
-
-        //$dato = $request->input('nombre');
-       return response()->json($ciudades);
+      //
     }
 
     /**
@@ -43,7 +25,7 @@ class PrediosController extends Controller
      */
     public function create()
     {
-        //
+       //
     }
 
     /**
@@ -65,9 +47,9 @@ class PrediosController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Predios $predios)
+    public function edit(string $id)
     {
-        //
+       //
     }
 
     /**

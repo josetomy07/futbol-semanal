@@ -49,7 +49,6 @@ class UserController extends Controller
         return Inertia::render('Usuarios/Administrador/crear', compact('roles'));
     }
 
-
     /**
      * Handle an incoming registration request.
      *

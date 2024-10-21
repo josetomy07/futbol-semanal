@@ -34,10 +34,10 @@ Route::prefix('/dashboard')->group( function(){
     Route::resource('Roles', RolesController::class);
     Route::resource('Usuarios/Administrador', UserController::class);
     Route::resource('post', PostController::class);
-    Route::resource('Equipo', PrediosController::class);
+    Route::resource('Solicitud', AlquilerController::class);
 });
 
-Route::post('/Equipo', [PrediosController::class, 'nombrePredio']);
+Route::post('/Solicitud', [AlquilerController::class, 'nombrePredio'])->name('Solicitud.nombrePredio');
 
 
 require __DIR__.'/auth.php';

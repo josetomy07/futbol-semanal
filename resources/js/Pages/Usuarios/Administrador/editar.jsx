@@ -3,8 +3,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
 
-
-
 const editar = ({user, roles, userRoles}) => {
 
     const { data, setData, put, reset } = useForm({
