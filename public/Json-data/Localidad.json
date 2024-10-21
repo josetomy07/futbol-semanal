@@ -1,0 +1,122 @@
+[
+    {
+      "id": "01",
+      "Localidad": "Cipolletti",
+      "Predio": "Los Manzanos",
+      "Cancha 5": "4",
+      "Cancha 8": "2"
+    },
+
+    {
+      "id": "02",
+      "Localidad": "Neuquen",
+      "Predio": "Todo Futbol",
+      "Cancha 5": "2",
+      "Cancha 8": "1"
+    },
+
+    {
+        "id": "03",
+        "Localidad": "Cinco-Salto",
+        "Predio": "Futbol 5",
+        "Cancha 5": "1",
+        "Cancha 8": "1"
+    },
+
+    {
+        "id": "04",
+        "Localidad": "Fernadez-Oro",
+        "Predio": "Oro Club",
+        "Cancha 5": "1",
+        "Cancha 8": "3"
+    },
+
+    {
+        "id": "05",
+        "Localidad": "Centenario",
+        "Predio": "Deporte Anateur",
+        "Cancha 5": "4",
+        "Cancha 8": "0"
+    },
+
+    {
+        "id": "06",
+        "Localidad": "Cipolletti",
+        "Predio": "El Gallinero",
+        "Cancha 5": "0",
+        "Cancha 8": "1"
+      },
+
+      {
+        "id": "07",
+        "Localidad": "Neuquen",
+        "Predio": "Rinconcito",
+        "Cancha 5": "2",
+        "Cancha 8": "4"
+      },
+
+      {
+          "id": "08",
+          "Localidad": "Cinco-Salto",
+          "Predio": "Tercer Tiempo",
+          "Cancha 5": "3",
+          "Cancha 8": "2"
+      },
+
+      {
+          "id": "09",
+          "Localidad": "Fernadez-Oro",
+          "Predio": "Espacio Futbol",
+          "Cancha 5": "2",
+          "Cancha 8": "1"
+      },
+
+      {
+          "id": "10",
+          "Localidad": "Centenario",
+          "Predio": "Impresur FC",
+          "Cancha 5": "2",
+          "Cancha 8": "2"
+      },
+
+      {
+        "id": "11",
+        "Localidad": "Cipolletti",
+        "Predio": "El Capataz",
+        "Cancha 5": "1",
+        "Cancha 8": "1"
+      },
+
+      {
+        "id": "12",
+        "Localidad": "Neuquen",
+        "Predio": "Locos Futbol Club",
+        "Cancha 5": "2",
+        "Cancha 8": "1"
+      },
+
+      {
+          "id": "13",
+          "Localidad": "Neuquen",
+          "Predio": "Lo Arrimado",
+          "Cancha 5": "2",
+          "Cancha 8": "0"
+      },
+
+      {
+          "id": "14",
+          "Localidad": "Cipolletti",
+          "Predio": "Es lo que hay",
+          "Cancha 5": "0",
+          "Cancha 8": "2"
+      },
+
+      {
+          "id": "15",
+          "Localidad": "Cipolletti",
+          "Predio": "Patogina FC",
+          "Cancha 5": "3",
+          "Cancha 8": "2"
+      }
+  ]
+

@@ -11,6 +11,8 @@ use Spatie\Permission\Models\Permission;
 
 use App\Http\Controllers\Controller;
 use App\Http\Manager\SubscriptionManager;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 /**
  * Class SubscriptionController
@@ -46,6 +48,7 @@ class RolesController extends Controller
     public function create()
     {
         $permission = Permission::get();
+
         return Inertia::render('Roles/crear', [
             'permission' => $permission
         ]);
@@ -54,18 +57,23 @@ class RolesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
+            'permiso' => 'required',
         ]);
 
-        $permission = Permission::create(['name' => $request->name]);
+        $permissionsID = array_map(
+            function($value){ return (int)$value; },
+            $request->input('permiso')
+        );
 
-        return Inertia::render('Permissions/index', [
-            'permission' => $permission,
-            'message' => 'Permiso creado exitosamente',
-        ]);
+        $role = Role::create(['name' => $request->input('name')]);
+        $role->syncPermissions($permissionsID);
+
+        return redirect()->route('Roles.index');
     }
 
     /**
