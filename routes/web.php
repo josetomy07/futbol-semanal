@@ -6,6 +6,8 @@ use App\Http\Controllers\PrediosController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UserController;
+use App\Models\Alquiler;
+use App\Models\Predios;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,9 +37,15 @@ Route::prefix('/dashboard')->group( function(){
     Route::resource('Usuarios/Administrador', UserController::class);
     Route::resource('post', PostController::class);
     Route::resource('Solicitud', AlquilerController::class);
+    Route::resource('Predio', PrediosController::class);
+
 });
 
+
 Route::post('/Solicitud', [AlquilerController::class, 'nombrePredio'])->name('Solicitud.nombrePredio');
+
+
+
 
 
 require __DIR__.'/auth.php';

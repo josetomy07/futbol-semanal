@@ -9,4 +9,21 @@ use Illuminate\Notifications\Notifiable;
 class Alquiler extends Model
 {
     use HasFactory, Notifiable;
+
+     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'jugador',
+        'email',
+        'predio',
+        'futbol',
+        'localidad',
+        'direccion',
+        'fecha',
+        'horario',
+        'reserva'
+    ];
 }

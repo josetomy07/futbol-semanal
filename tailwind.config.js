@@ -29,6 +29,5 @@ export default {
         forms,
         require('flowbite/plugin'),
         flowbite.plugin(),
-
     ],
 };

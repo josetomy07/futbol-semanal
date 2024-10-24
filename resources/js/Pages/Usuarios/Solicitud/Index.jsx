@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Collapse from '@/Components/collapse';
 import { Head, usePage } from '@inertiajs/react';
+import { Modal } from 'flowbite-react';
+import DataTable from 'datatables.net-react';
+import DT from 'datatables.net-dt';
+import '../../../../css/dataTables.css';
 
 
 
 const Index = () => {
 
-    const { ciudad } = usePage().props;
+    const { ciudad, predios, alquilados } = usePage().props;
 
     const [showToast, setShowToast] = useState(false)
     const [showEquipo, setShowEquipo] = useState(false);
@@ -29,6 +33,22 @@ const Index = () => {
             .catch(error => console.error('Error:', error));
     }, [showEquipo]);
 
+
+    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
+
+    const confirmUserDeletion = () => {
+        setConfirmingUserDeletion(true);
+    };
+
+    const closeModal = () => {
+        setConfirmingUserDeletion(false);
+
+        clearErrors();
+        reset();
+    };
+
+    DataTable.use(DT);
+
     return (
 
         <AuthenticatedLayout>
@@ -43,7 +63,7 @@ const Index = () => {
                 </div>
             </div>
 
-            <div className="container">
+            <div className="container-fluid">
 
                 <div className="row justify-content-start">
 
@@ -56,8 +76,7 @@ const Index = () => {
                         </Collapse.button>
 
                         <Collapse.button
-                            value={'Disponibildad de cancha'}
-                            onClick={(e) => setShowToast(e.target.value)}>
+                            onClick={confirmUserDeletion}>
                             <i className="fa-solid fa-map-location-dot ico-soli"></i>
                             Disponibildad de cancha
                         </Collapse.button>
@@ -92,7 +111,6 @@ const Index = () => {
                             <div className="col-md-2 menu2 mx-8  text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 {ciudad.map( (lugar, index ) => (
                                     <Collapse.button
-                                        type='button'
                                         value={lugar.localidad}
                                         onClick={(e) => setShowEquipo(e.target.value)}
                                         key={index}
@@ -103,15 +121,49 @@ const Index = () => {
                             </div>
                     )}
 
-                    {showToast === "Disponibildad de cancha" && (
-                    <>
-                        <div className="col-md-4">
-                        <div className="ml-3 text-sm font-normal">Set yourself free2.</div>
-                        </div>
 
-                        <button type='button' className='border-t-purple-500' onClick={() => setShowToast(false)}> salir</button>
-                    </>
-                    )}
+                    <Modal show={confirmingUserDeletion} onClose={closeModal}>
+
+                        <Modal.Body className='container-fluid'>
+
+                            <div className="modal-body">
+                                <button type="button" onClick={closeModal} >
+                                    <i className="fa-solid fa-xmark ico-modal"></i>
+                                    <span className="sr-only">Close modal</span>
+                                </button>
+
+                                <DataTable className="display text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" id="example">
+                                    <thead >
+                                        <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Predio</th>
+                                        <th scope="col">localidad</th>
+                                        <th scope="col">Direccion</th>
+                                        <th scope="col">Futbol 5</th>
+                                        <th scope="col">Ftubol 8</th>
+                                        </tr>
+                                    </thead>
+                                        <tbody>
+                                            {predios.map(data => (
+                                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={data.id}>
+                                                    <th scope="row">{data.id}</th>
+                                                    <td className="px-3 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">{data.nombre}</td>
+                                                    <td>{data.localidad}</td>
+                                                    <td>{data.direccion}</td>
+                                                    <td>{data.cinco}</td>
+                                                    <td>{data.ocho}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+
+                                </DataTable>
+
+                            </div>
+
+                    </Modal.Body>
+                    </Modal>
+
+
 
                     {showEquipo === "Cipolletti" && (
 

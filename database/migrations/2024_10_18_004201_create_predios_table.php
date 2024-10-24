@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('localidad');
-            $table->string('canchacinco');
-            $table->string('canchaocho');
+            $table->string('direccion');
+            $table->string('cinco');
+            $table->string('ocho');
             $table->timestamps();
         });
     }

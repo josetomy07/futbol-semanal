@@ -7,6 +7,8 @@ use App\Http\Requests\StoreAlquilerRequest;
 use App\Http\Requests\UpdateAlquilerRequest;
 use App\Models\Predios;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 
 class AlquilerController extends Controller
@@ -16,8 +18,10 @@ class AlquilerController extends Controller
      */
     public function index()
     {
+        $alquilados = Alquiler::all();
+        $predios = Predios::all();
         $ciudad = Predios::select('localidad')->distinct()->get();
-        return Inertia::render('Usuarios/Solicitud/Index', compact('ciudad'));
+        return Inertia::render('Usuarios/Solicitud/Index', compact('ciudad', 'predios', 'alquilados'));
     }
 
       /**
@@ -41,19 +45,36 @@ class AlquilerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAlquilerRequest $request)
+    public function store(Request $request)
     {
-        //
+        request()->validate([
+            'jugador' => 'required|string|max:255',
+            'email' =>  'required|string|lowercase|email|max:255',
+            'predio'  => 'required|string|max:255',
+            'futbol' => 'required|string|max:255',
+            'localidad'  => 'required|string|max:255',
+            'direccion'  => 'required|string|max:255',
+            'fecha' =>  'required|string|max:255',
+            'horario' => 'required|string|max:255',
+            'reserva' => 'required|string|max:255',
+        ]);
+
+        $alquilo = $request->all();
+
+        Alquiler::create($alquilo);
+
+        return Inertia::render('Dashboard');
     }
+
+
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        $predios = Predios::all();
         $predioSelecionado = Predios::find($id);
-        return Inertia::render('Usuarios/Solicitud/Crear', compact('predios', 'predioSelecionado'));
+        return Inertia::render('Usuarios/Solicitud/Crear', compact('predioSelecionado'));
     }
 
     /**

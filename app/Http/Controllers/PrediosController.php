@@ -17,7 +17,9 @@ class PrediosController extends Controller
      */
     public function index()
     {
-      //
+      $predios = Predios::all();
+      return Inertia::render('Usuarios/Predio/Index', compact('predios'));
+
     }
 
     /**

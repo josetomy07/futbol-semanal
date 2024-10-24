@@ -15,5 +15,11 @@ class Predios extends Model
      *
      * @var array
      */
-    protected $fillable = ['nombre', 'localidad', 'canchacinco','canchaocho'];
+    protected $fillable = [
+        'nombre',
+        'localidad',
+        'direccion',
+        'cinco',
+        'ocho'
+    ];
 }
