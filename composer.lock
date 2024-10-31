@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f278454a75d1c81b8ae47b25cc75262",
+    "content-hash": "92d9135b8abc800dac77b4615e682a54",
     "packages": [
         {
             "name": "brick/math",
@@ -1582,6 +1582,69 @@
                 "source": "https://github.com/laravel/tinker/tree/v2.9.0"
             },
             "time": "2024-01-04T16:10:04+00:00"
+        },
+        {
+            "name": "laravel/ui",
+            "version": "v4.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/ui.git",
+                "reference": "c75396f63268c95b053c8e4814eb70e0875e9628"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/ui/zipball/c75396f63268c95b053c8e4814eb70e0875e9628",
+                "reference": "c75396f63268c95b053c8e4814eb70e0875e9628",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^9.21|^10.0|^11.0",
+                "illuminate/filesystem": "^9.21|^10.0|^11.0",
+                "illuminate/support": "^9.21|^10.0|^11.0",
+                "illuminate/validation": "^9.21|^10.0|^11.0",
+                "php": "^8.0",
+                "symfony/console": "^6.0|^7.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^7.35|^8.15|^9.0",
+                "phpunit/phpunit": "^9.3|^10.4|^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Ui\\UiServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Ui\\": "src/",
+                    "Illuminate\\Foundation\\Auth\\": "auth-backend/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel UI utilities and presets.",
+            "keywords": [
+                "laravel",
+                "ui"
+            ],
+            "support": {
+                "source": "https://github.com/laravel/ui/tree/v4.5.2"
+            },
+            "time": "2024-05-08T18:07:10+00:00"
         },
         {
             "name": "league/commonmark",
@@ -5558,6 +5621,139 @@
                 }
             ],
             "time": "2024-08-30T16:12:47+00:00"
+        },
+        {
+            "name": "takielias/tablar",
+            "version": "11.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/takielias/tablar.git",
+                "reference": "bd67d20872726825e5b543a8cc644814c3734856"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/takielias/tablar/zipball/bd67d20872726825e5b543a8cc644814c3734856",
+                "reference": "bd67d20872726825e5b543a8cc644814c3734856",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~10|~11",
+                "laravel/ui": "~4"
+            },
+            "require-dev": {
+                "orchestra/testbench": ">=9.0",
+                "phpunit/phpunit": ">=10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "TakiElias\\Tablar\\TablarServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TakiElias\\Tablar\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taki Elias",
+                    "email": "taki.elias@gmail.com"
+                }
+            ],
+            "description": "Tablar: A Laravel Dashboard Preset Featuring Dark Mode and Dynamic Menu Generation for Effortless Navigation and Fast Development.",
+            "keywords": [
+                "bootstrap",
+                "laravel",
+                "preset",
+                "tabler",
+                "vite"
+            ],
+            "support": {
+                "issues": "https://github.com/takielias/tablar/issues",
+                "source": "https://github.com/takielias/tablar/tree/11.9"
+            },
+            "time": "2024-09-19T16:45:27+00:00"
+        },
+        {
+            "name": "takielias/tablar-kit",
+            "version": "11.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/takielias/tablar-kit.git",
+                "reference": "64991e45b58e0cbcd4ab75951b333f11917a090b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/takielias/tablar-kit/zipball/64991e45b58e0cbcd4ab75951b333f11917a090b",
+                "reference": "64991e45b58e0cbcd4ab75951b333f11917a090b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/filesystem": "^10.0|^11.0",
+                "illuminate/support": "^10.0|^11.0",
+                "illuminate/view": "^10.0|^11.0",
+                "nesbot/carbon": "^2.72.2|^3.0",
+                "takielias/tablar": "*"
+            },
+            "require-dev": {
+                "gajus/dindent": "^2.0",
+                "league/commonmark": "^1.4|^2.0",
+                "lorisleiva/cron-translator": "^0.1.1",
+                "orchestra/testbench": "~9",
+                "phpunit/phpunit": "~9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Takielias\\TablarKit\\TablarKitServiceProvider"
+                    ],
+                    "aliases": {
+                        "TablarKit": "Takielias\\TablarKit\\Facades\\TablarKit"
+                    }
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Helpers/functions.php"
+                ],
+                "psr-4": {
+                    "Takielias\\TablarKit\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taki Elias",
+                    "email": "taki.elias@email.com",
+                    "homepage": "https://ebuz.xyz"
+                }
+            ],
+            "description": "The Elegance of Tablar Dashboard",
+            "homepage": "https://github.com/takielias/tablar-kit",
+            "keywords": [
+                "Tablar",
+                "TablarKit",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/takielias/tablar-kit/issues",
+                "source": "https://github.com/takielias/tablar-kit/tree/11.11"
+            },
+            "time": "2024-08-03T12:47:16+00:00"
         },
         {
             "name": "tightenco/ziggy",

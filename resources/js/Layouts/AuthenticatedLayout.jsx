@@ -4,14 +4,19 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 
 export default function Authenticated({ header, children }) {
-    const { auth } = usePage().props;
 
+    const { auth } = usePage().props;
     const user = usePage().props.auth.user;
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
-    return (
+    const dashboardRoute =
+    auth.roles[0] === 'superadmin' ? route('dashboard') :
+    auth.roles[0] === 'jugador' ? route('Jugador.Dashjugador') :
+    auth.roles[0] === 'predio' ? route('Predio.Dashpredios'):
+    '/';
 
+    return (
 
         <div className="min-h-screen bg-slate-50 dark:bg-gray-900">
 
@@ -29,7 +34,7 @@ export default function Authenticated({ header, children }) {
 
                             <div className="hidden sm:flex sm:items-center space-x-4 sm:-my-px sm:ms-5">
                                 <div className="ms-3 relative">
-                                    <Link href={route('dashboard')}
+                                    <Link href={dashboardRoute}
                                         type="button"
                                         className="flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white dark:text-slate-50 bg-gray-500 dark:bg-gray-900 focus:outline-none transition ease-in-out duration-150"
                                         >
@@ -146,7 +151,7 @@ export default function Authenticated({ header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                        <ResponsiveNavLink href={dashboardRoute}>
                             New Perfil
                         </ResponsiveNavLink>
                     </div>

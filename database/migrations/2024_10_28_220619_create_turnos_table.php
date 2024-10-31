@@ -11,15 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('predios', function (Blueprint $table) {
+        Schema::create('turnos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('localidad');
-            $table->string('direccion');
-            $table->string('cinco');
-            $table->string('ocho');
-            $table->string('latitude');
-            $table->string('longitude');
             $table->timestamps();
         });
     }
@@ -29,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('predios');
+        Schema::dropIfExists('turnos');
     }
 };

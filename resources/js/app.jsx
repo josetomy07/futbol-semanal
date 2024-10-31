@@ -1,11 +1,18 @@
 import '../css/app.css';
-import './bootstrap';
 import 'flowbite';
 import '../../public/css/bootstrap.min.css';
-import '../../public/css/style.css';
-import '../css/style.css';
+import 'owl.carousel/dist/assets/owl.carousel.min.css';
+import 'owl.carousel/dist/assets/owl.theme.default.min.css';
+import '../../public/css/magnific-popup.css';
+import 'slicknav/dist/slicknav.min.css';
 
-import ReactDOM from 'react-dom';
+import 'bootstrap/dist/js/bootstrap.min.js';
+import 'mixitup/dist/mixitup.min.js';
+import 'slicknav/dist/jquery.slicknav.min.js';
+import 'owl.carousel/dist/owl.carousel.min.js';
+import '../css/Estilos/style.css';
+
+
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -28,3 +35,5 @@ createInertiaApp({
         color: '#4B5563',
     },
 });
+
+

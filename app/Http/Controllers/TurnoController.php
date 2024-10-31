@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Turno;
+use App\Http\Requests\StoreTurnoRequest;
+use App\Http\Requests\UpdateTurnoRequest;
 
-use App\Models\Predios;
-use App\Http\Requests\StorePrediosRequest;
-use App\Http\Requests\UpdatePrediosRequest;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-
-
-class PrediosController extends Controller
+class TurnoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-      $predios = Predios::all();
-      return Inertia::render('Usuarios/Predio/Dashpredios', compact('predios'));
+        //
     }
 
     /**
@@ -26,13 +21,13 @@ class PrediosController extends Controller
      */
     public function create()
     {
-       //
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePrediosRequest $request)
+    public function store(StoreTurnoRequest $request)
     {
         //
     }
@@ -40,7 +35,7 @@ class PrediosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Predios $predios)
+    public function show(Turno $turno)
     {
         //
     }
@@ -48,15 +43,15 @@ class PrediosController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Turno $turno)
     {
-       //
+        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePrediosRequest $request, Predios $predios)
+    public function update(UpdateTurnoRequest $request, Turno $turno)
     {
         //
     }
@@ -64,7 +59,7 @@ class PrediosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Predios $predios)
+    public function destroy(Turno $turno)
     {
         //
     }

@@ -6,6 +6,7 @@ use App\Models\Alquiler;
 use App\Http\Requests\StoreAlquilerRequest;
 use App\Http\Requests\UpdateAlquilerRequest;
 use App\Models\Predios;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\RedirectResponse;
@@ -21,17 +22,53 @@ class AlquilerController extends Controller
         $alquilados = Alquiler::all();
         $predios = Predios::all();
         $ciudad = Predios::select('localidad')->distinct()->get();
-        return Inertia::render('Usuarios/Solicitud/Index', compact('ciudad', 'predios', 'alquilados'));
+        return Inertia::render('Usuarios/Solicitud/Index', compact('ciudad',
+                                                                    'predios',
+                                                                    'alquilados'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function contarCanchasAlquiladas()
+    {
+        $hoy = Carbon::today();
+        $contador = Alquiler::whereDate('fecha', $hoy)
+                              ->get();// Cambia 'fecha' por el nombre de tu columna
+
+        $result = $contador->map(function ($alquiler) {
+            return [
+                'predio' => $alquiler->predio, // Asegúrate de que 'nombre' sea el campo correcto
+                'horas' => $alquiler->horario,
+            ];
+        });
+        return response()->json(['contador' => $result]);
+    }
+
+     /**
+     * Display a listing of the resource.
+     */
+    public function datosAlquiler(): RedirectResponse
+    {
+        $alquilados = Alquiler::all();
+
+        return redirect()->route('Dashboard');
     }
 
       /**
      * Display the specified resource.
      */
-    public function nombrePredio(Request $request)
+    public function nombrePredio(Request $request, $id)
     {
+        //dd($request);
+        //$datos = Predios::where('localidad', $id)->get();
+       //return response()->json($datos);
+
+
         $ciudad = $request->all();
-        $ciudades = Predios::where('localidad', $ciudad)->get();
+        $ciudades = Predios::where('localidad', $id)->get();
         return response()->json($ciudades);
+
     }
 
     /**
@@ -63,7 +100,7 @@ class AlquilerController extends Controller
 
         Alquiler::create($alquilo);
 
-        return Inertia::render('Dashboard');
+        return Inertia::render('dashboard');
     }
 
 

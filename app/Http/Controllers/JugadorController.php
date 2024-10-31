@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\Predios;
-use App\Http\Requests\StorePrediosRequest;
-use App\Http\Requests\UpdatePrediosRequest;
 use Illuminate\Http\Request;
+use App\Models\Jugador;
+use App\Http\Requests\StoreJugadorRequest;
+use App\Http\Requests\UpdateJugadorRequest;
+use App\Models\Alquiler;
 use Inertia\Inertia;
 
-
-class PrediosController extends Controller
+class JugadorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-      $predios = Predios::all();
-      return Inertia::render('Usuarios/Predio/Dashpredios', compact('predios'));
+       $datosAlquiler = Alquiler::all();
+       return Inertia::render('Usuarios/Jugador/Dashjugador', ['datosAlquiler' => $datosAlquiler]);
+       //dd($datosAlquiler);
     }
 
     /**
@@ -26,13 +26,13 @@ class PrediosController extends Controller
      */
     public function create()
     {
-       //
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePrediosRequest $request)
+    public function store(StoreJugadorRequest $request)
     {
         //
     }
@@ -40,7 +40,7 @@ class PrediosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Predios $predios)
+    public function show(Jugador $jugador)
     {
         //
     }
@@ -48,15 +48,15 @@ class PrediosController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Jugador $jugador)
     {
-       //
+        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePrediosRequest $request, Predios $predios)
+    public function update(UpdateJugadorRequest $request, Jugador $jugador)
     {
         //
     }
@@ -64,7 +64,7 @@ class PrediosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Predios $predios)
+    public function destroy(Jugador $jugador)
     {
         //
     }

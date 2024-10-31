@@ -97,10 +97,9 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::find($id);
-        //$roles = Role::pluck('name','name')->all();
         $roles = Role::all();
-        //$userRoles = $user->roles->pluck('name','name')->all();
         $userRoles = $user->roles->pluck('name')->toArray();
+
         return Inertia::render('Usuarios/Administrador/editar', compact('user','roles','userRoles'));
     }
 

@@ -4,15 +4,7 @@ import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import { useState } from 'react';
 import '../../../public/css/font-awesome.min.css';
-import '../../../public/css/owl.carousel.min.css';
-import 'magnific-popup/dist/magnific-popup.css';
-import 'magnific-popup/dist/magnific-popup.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
-import '../../../public/js/jquery.magnific-popup.min.js';
-import 'mixitup/dist/mixitup.min.js';
 import '../../../public/js/masonry.pkgd.min.js';
-import 'slicknav/dist/jquery.slicknav.min.js';
-import 'owl.carousel/dist/owl.carousel.min.js';
 
 
 
@@ -172,10 +164,10 @@ export default function Welcome({ auth, laravelVersion, phpVersion, status  }) {
 
         /*------------------
             Video Popup
-        --------------------*/
+        --------------------
         $('.video-popup').magnificPopup({
             type: 'iframe'
-        });
+        });*/
 
         /*------------------
             Counter
@@ -222,11 +214,17 @@ export default function Welcome({ auth, laravelVersion, phpVersion, status  }) {
     };
 
 
+    const dashboardRoute =
+    auth.roles[0] === 'superadmin' ? route('dashboard') :
+    auth.roles[0] === 'jugador' ? route('Jugador.Dashjugador') :
+    auth.roles[0] === 'predio' ? route('Predio.Dashpredios'):
+    '/';
 
+   // console.log(auth.roles)
     return (
         <>
             <div id="">
-                <div className="loader"></div>
+                <div className=""></div>
             </div>
 
             <header className="header">
@@ -254,7 +252,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion, status  }) {
                                         </li>
                                         <li><a href="">Reserva</a></li>
                                         {auth.user ? (
-                                            <li><Link href={route('dashboard')}>Home</Link></li>
+                                            <li><Link href={dashboardRoute}>Home</Link></li>
                                             ) : (
                                             <>
                                                 <li>

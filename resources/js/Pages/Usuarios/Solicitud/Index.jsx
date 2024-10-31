@@ -1,64 +1,107 @@
 import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import Collapse from '@/Components/collapse';
 import { Head, usePage } from '@inertiajs/react';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import Mapbox from '@/Components/Mapbox';
 import { Modal } from 'flowbite-react';
-import DataTable from 'datatables.net-react';
-import DT from 'datatables.net-dt';
-import '../../../../css/dataTables.css';
-
 
 
 const Index = () => {
 
+    //Datos de predios, alquilados, ciudad
     const { ciudad, predios, alquilados } = usePage().props;
 
+    //Habre y cierra opciones como calendario y disponibilidad
     const [showToast, setShowToast] = useState(false)
     const [showEquipo, setShowEquipo] = useState(false);
 
+    //Marca toda las fechas posteriores al dia en gris y habre el menu disponible
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const verDiponibilidad = (date) =>{
+        setSelectedDate(date)
+        setShowEquipo(true)
+    }
 
-    const [datos, setDatos] = useState('');
-
+    //Contador del dia de hoy
+    const [contador, setContador] = useState([]);
     useEffect(() => {
-        fetch('/Solicitud', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ nombre: showEquipo })
-            })
-            .then(response => response.json())
-            .then(data => setDatos(data))
-            .catch(error => console.error('Error:', error));
-    }, [showEquipo]);
+        const fetchContador = async () => {
+            const response = await fetch('/Solicitud/hoy');
+            const data = await response.json();
+            setContador(data.contador);
+        };
 
+        fetchContador();
+    }, []);
 
-    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
+    //De vuelve los predios disponible
+    const [selectedLocalidad, setSelectedLocalidad] = useState(null);
+    const [datos, setDatos] = useState([]);
+    const handleLocalidadChange = async (e) => {
 
-    const confirmUserDeletion = () => {
-        setConfirmingUserDeletion(true);
+        const localidadId = e.target.value;
+        setSelectedLocalidad(localidadId);
+
+        const response = await fetch(`/Solicitud/${localidadId}`);
+        const result = await response.json();
+        setDatos(result);
     };
 
+    //ubicacion
+    const [selectedUbicacion, setSelectedUbicacion] = useState(null);
+    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLongitude] = useState(null);
+
+    //Modal muestra la localizacion de los predios.
+    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
+    const confirmUserDeletion = async (e) => {
+
+        const ubicacionId = e.target.value;
+
+        setConfirmingUserDeletion(true);
+
+        setSelectedUbicacion(ubicacionId);
+
+
+        predios.map(dato => {
+
+            if (dato.direccion === ubicacionId) {
+
+                setLatitude(dato.latitude);
+                setLongitude(dato.longitude);
+            }
+
+        });
+
+    };
     const closeModal = () => {
         setConfirmingUserDeletion(false);
 
-        clearErrors();
-        reset();
+        //clearErrors();
+        //reset();
     };
 
-    DataTable.use(DT);
 
     return (
 
         <AuthenticatedLayout>
 
-            <Head title="Solicitudes" />
+            <Head />
 
-            <div className="container py-4">
+            <div className=" container py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">Nueva Solicitud</div>
+                    <div className="d-flex position-relative align-items-center p-3 my-3 bg-purple shadow-sm text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <div className="">
+                            <h1 className="h6 mb-0 lh-1">Solicitud de Cancha</h1>
+                        </div>
+                        <button
+                            type='button'
+                            className='btn btn-primary position-absolute top-50 end-0 mr-6'
+                            onClick={(e) => setShowToast('Disponibilidad', e.target.value)}
+                            >
+                            Disponibilidad
+                        </button>
                     </div>
                 </div>
             </div>
@@ -67,172 +110,117 @@ const Index = () => {
 
                 <div className="row justify-content-start">
 
-                    <div className="col-md-2 menu1 text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    {showToast === "Disponibilidad" && (
 
-                        <Collapse.button
-                            onClick={(e) => setShowToast('Solicitud de Cancha', e.target.value)}>
-                            <i className="fa-solid fa-futbol ico-soli"></i>
-                            Solicitud de Cancha
-                        </Collapse.button>
+                        <div className="caja1 text-gray-900 bg-slate-800 border border-b-gray-800 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 
-                        <Collapse.button
-                            onClick={confirmUserDeletion}>
-                            <i className="fa-solid fa-map-location-dot ico-soli"></i>
-                            Disponibildad de cancha
-                        </Collapse.button>
+                            <h5 className='py-4 text-center'>Ver Disponibilidad</h5>
 
-                        <Collapse.button
-                            onClick={(e) => setShowToast('Baja de Reserva', e.target.value)}>
-                            <i className="fa-solid fa-calendar-xmark ico-soli"></i>
-                            Baja de Reserva
-                        </Collapse.button>
+                            <Calendar
+                                className="rounded"
+                                onChange={verDiponibilidad}
+                                value={selectedDate}
+                                minDate={new Date()}
+                            />
+                        </div>
 
-                        <Collapse.button
-                            onClick={(e) => setShowToast('Locacion de Predio', e.target.value)}>
-                            <i className="fa-solid fa-earth-americas ico-soli"></i>
-                            Locacion de Predio
-                        </Collapse.button>
-
-                        <Collapse.button
-                            onClick={(e) => setShowToast('Reserva Varias', e.target.value)}>
-                            <i className="fa-solid fa-clipboard-list ico-soli"></i>
-                            Reserva Varias
-                        </Collapse.button>
-
-                        <Collapse.button
-                            onClick={(e) => setShowToast('Error de Sistema', e.target.value)}>
-                            <i className="fa-solid fa-screwdriver-wrench ico-soli"></i>
-                            Error de Sistema
-                        </Collapse.button>
-
-                    </div>
-
-                    {showToast === "Solicitud de Cancha" && (
-                            <div className="col-md-2 menu2 mx-8  text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                {ciudad.map( (lugar, index ) => (
-                                    <Collapse.button
-                                        value={lugar.localidad}
-                                        onClick={(e) => setShowEquipo(e.target.value)}
-                                        key={index}
-                                    >
-                                        {lugar.localidad}
-                                    </Collapse.button>
-                                ))}
-                            </div>
                     )}
 
+                    {showEquipo && (
+                    <>
+                        <div className="mx-8 text-black bg-zinc-300 border border-b-gray-800 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 
-                    <Modal show={confirmingUserDeletion} onClose={closeModal}>
+                            <div className="container">
 
-                        <Modal.Body className='container-fluid'>
+                                <div className="relative overflow-x-auto">
 
-                            <div className="modal-body">
-                                <button type="button" onClick={closeModal} >
-                                    <i className="fa-solid fa-xmark ico-modal"></i>
-                                    <span className="sr-only">Close modal</span>
-                                </button>
+                                    <h5 className='py-4 text-center'>Predio disponible </h5>
 
-                                <DataTable className="display text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" id="example">
-                                    <thead >
-                                        <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Predio</th>
-                                        <th scope="col">localidad</th>
-                                        <th scope="col">Direccion</th>
-                                        <th scope="col">Futbol 5</th>
-                                        <th scope="col">Ftubol 8</th>
-                                        </tr>
-                                    </thead>
+                                    <table className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                        <thead  className=''>
+                                            <tr className='bg-red-400'>
+                                            <th scope="col" className=''>
+
+                                                <label htmlFor="underline_select" className="sr-only">Localidad</label>
+                                                <select
+                                                    value={selectedLocalidad || ''}
+                                                    onChange={handleLocalidadChange}
+                                                    className="bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200"
+                                                    >
+                                                    <option value="" disabled>Localidad</option>
+                                                    {ciudad.map(location =>(
+                                                        <option
+                                                            key={location.localidad}
+                                                            value={location.localidad}
+                                                            >
+                                                            {location.localidad}
+                                                        </option>
+                                                    ))}
+                                                </select>
+
+                                            </th>
+                                            <th scope="col" className="px-8 py-3">Ubicación</th>
+                                            <th scope="col" className="px-6 py-3">Futbol 5</th>
+                                            <th scope="col" className="px-6 py-3">Futbol 8</th>
+                                            </tr>
+                                        </thead>
                                         <tbody>
-                                            {predios.map(data => (
-                                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={data.id}>
-                                                    <th scope="row">{data.id}</th>
-                                                    <td className="px-3 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">{data.nombre}</td>
-                                                    <td>{data.localidad}</td>
-                                                    <td>{data.direccion}</td>
-                                                    <td>{data.cinco}</td>
-                                                    <td>{data.ocho}</td>
+                                            {datos.map(data => (
+                                                <tr scope="col" key={data.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                                    <td className="px-2 py-2">
+                                                        <i className="fa-solid fa-futbol ico-soli" />
+                                                        {data.nombre}
+                                                    </td>
+                                                    <td scope="col" className="px-2 py-2">
+                                                        <button
+                                                            type='button'
+                                                            className="px-4 py-2"
+                                                            value={data.direccion || ''}
+                                                            onClick={confirmUserDeletion}
+                                                        >
+                                                            <i className="fa-solid fa-map-location-dot ico-soli" />
+                                                            {data.direccion}
+                                                        </button>
+                                                    </td>
+                                                    <td scope="col" className="px-4 py-2 text-center">{data.cinco}</td>
+                                                    <td scope="col" className="px-4 py-2 text-center">{data.ocho}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
 
-                                </DataTable>
+                                    </table>
+
+                                </div>
 
                             </div>
-
-                    </Modal.Body>
-                    </Modal>
-
-
-
-                    {showEquipo === "Cipolletti" && (
-
-                        <div className="col-md-2 menu2 mx-8  text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            {datos.map( (predio, indexs ) => (
-                                <a
-                                    href={route('Solicitud.show', predio.id)}
-                                    className='relative inline-flex items-center w-full px-4 py-3 text-sm font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white'
-                                    key={indexs}
-                                    >
-                                    {predio.nombre}
-                                </a>
-                            ))}
                         </div>
-
+                    </>
                     )}
-
-                    {showEquipo === "Neuquen" && (
-                        <>
-                            <div className="col-md-2 menu2 mx-8  text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            {datos.map( (predio, indexs ) => (
-
-                                <Collapse.button
-                                    key={indexs}>
-                                        {predio.nombre}
-                                </Collapse.button>
-                                ))}
-                            </div>
-                        </>
-                    )}
-
-                    {showEquipo === "Cinco-Salto" && (
-
-                        <div className="col-md-2 menu2 mx-8  text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            {datos.map( (predio, indexs ) => (
-                                <Collapse.button
-                                    key={indexs}
-                                    >
-                                    {predio.nombre}
-                                </Collapse.button>
-                            ))}
-                        </div>
-
-                    )}
-
-                    {showEquipo === "Fernandez-Oro" && (
-
-                        <div className="col-md-2 menu2 mx-8  text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            {datos.map( (predio, indexs ) => (
-                                <Collapse.button
-                                    key={indexs}
-                                    >
-                                    {predio.nombre}
-                                </Collapse.button>
-                            ))}
-                        </div>
-
-                    )}
-
-
-
-
-
-
 
                 </div>
 
-
             </div>
+
+            <Modal show={confirmingUserDeletion} onClose={closeModal}>
+
+                <Modal.Body className='container-fluid'>
+
+                    <button
+                        type="button"
+                        className='position-absolute top-50 end-0 mr-6 py-4 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white'
+                        onClick={closeModal}
+                        >
+                        <i className="fa-solid fa-xmark ico-modal" />
+                        <span className="sr-only">Close modal</span>
+                    </button>
+                    <div>
+                        <h3 className='text-center py-4'>Ubicación en el mapa</h3>
+                        <Mapbox latitude={latitude} longitude={longitude} />
+                    </div>
+
+                </Modal.Body>
+
+            </Modal>
 
         </AuthenticatedLayout>
 
