@@ -67,25 +67,24 @@ class AlquilerController extends Controller
 
         foreach ($arregloPredio as $predio) {
 
-            $totalDiponible[$predio['id']] = [
-                'nombre' => $predio['predio'],
-                'ubicacion' => $predio['domicilio'],
-                //'total' => $predio['total'],
-                'canchas' => [
-                    'futbol 5' => [
-                                    20 =>$predio['futbol 5'],
-                                    21 =>$predio['futbol 5'],
-                                    22 =>$predio['futbol 5'],
-                                    23 =>$predio['futbol 5'],
-                                  ],
-                    'futbol 8' => [
-                                    20 =>$predio['futbol 8'],
-                                    21 =>$predio['futbol 8'],
-                                    22 =>$predio['futbol 8'],
-                                    23 =>$predio['futbol 8'],
-                                  ],
-                ],
+            $nombre = $predio['predio'];
+            $ubicacion = $predio['domicilio'];
+            //'total' => $predio['total'],
+            $canchas = [
+                'futbol 5' => [
+                                20 =>$predio['futbol 5'],
+                                21 =>$predio['futbol 5'],
+                                22 =>$predio['futbol 5'],
+                                23 =>$predio['futbol 5'],
+                                ],
+                'futbol 8' => [
+                                20 =>$predio['futbol 8'],
+                                21 =>$predio['futbol 8'],
+                                22 =>$predio['futbol 8'],
+                                23 =>$predio['futbol 8'],
+                                ],
             ];
+
         }
 
         $totalOcupadas = []; //Obtengo arreglo legible de ocupadas
