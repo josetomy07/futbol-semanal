@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('localidad');
             $table->string('direccion');
-            $table->string('cinco');
-            $table->string('ocho');
+            $table->integer('cinco');
+            $table->integer('ocho');
             $table->string('latitude');
             $table->string('longitude');
             $table->timestamps();

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('localidad');
             $table->string('direccion');
             $table->string('fecha');
-            $table->string('horario');
+            $table->integer('horario');
             $table->string('reserva');
             $table->timestamps();
         });

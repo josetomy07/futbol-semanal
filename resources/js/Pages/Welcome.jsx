@@ -1,16 +1,18 @@
+import $ from 'jquery';
 import { Link, useForm } from '@inertiajs/react';
 import { Button, Label, Modal } from 'flowbite-react';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../../../public/css/font-awesome.min.css';
 import '../../../public/js/masonry.pkgd.min.js';
 
 
 
+
 export default function Welcome({ auth, laravelVersion, phpVersion, status  }) {
 
-    (function ($) {
+    useEffect(() => {
 
         /*------------------
             Preloader
@@ -43,25 +45,25 @@ export default function Welcome({ auth, laravelVersion, phpVersion, status  }) {
         });
 
         //Masonary
-
+        /*
         $('.work__gallery').masonry({
             itemSelector: '.work__item',
             columnWidth: '.grid-sizer',
             gutter: 10
         });
-
+*/
 
         /*------------------
             Navigation
-        --------------------*/
+        --------------------
         $(".mobile-menu").slicknav({
             prependTo: '#mobile-menu-wrap',
             allowParentLinks: true
         });
-
+*/
         /*------------------
             Hero Slider
-        --------------------*/
+        --------------------
         $('.hero__slider').owlCarousel({
             loop: true,
             dots: true,
@@ -83,11 +85,11 @@ export default function Welcome({ auth, laravelVersion, phpVersion, status  }) {
             } else {
                 $(this).html(index);
             }
-        });
+        });*/
 
         /*------------------
             Testimonial Slider
-        --------------------*/
+        --------------------
         $(".testimonial__slider").owlCarousel({
             loop: true,
             margin: 0,
@@ -108,11 +110,11 @@ export default function Welcome({ auth, laravelVersion, phpVersion, status  }) {
                     items: 1
                 }
             }
-        });
+        });*/
 
         /*------------------
             Latest Slider
-        --------------------*/
+        --------------------
         $(".latest__slider").owlCarousel({
             loop: true,
             margin: 0,
@@ -133,11 +135,11 @@ export default function Welcome({ auth, laravelVersion, phpVersion, status  }) {
                     items: 1
                 }
             }
-        });
+        });*/
 
         /*------------------
             Logo Slider
-        --------------------*/
+        --------------------
         $(".logo__carousel").owlCarousel({
             loop: true,
             margin: 100,
@@ -184,7 +186,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion, status  }) {
             });
         });
 
-    })(jQuery);
+    }, []);
 
 
     const [openModal, setOpenModal] = useState(false);
