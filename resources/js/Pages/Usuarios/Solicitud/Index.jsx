@@ -52,6 +52,7 @@ const Index = () => {
         const response = await fetch(`/Solicitud/${localidadId}`);
         const result = await response.json();
         setDatos(result);
+        console.log(result);
     };
 
     //ubicacion
@@ -85,6 +86,29 @@ const Index = () => {
     const handleSelect = (id, value) => {
         setSelectedValue((prev) => ({ ...prev, [id]: value }));
     };
+
+    const [tiempo, setTiempo] = useState()
+
+    useEffect(() => {
+        fetch('/tiempo/' + selectedLocalidad)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    console.error(data.error);
+                }else {
+                    setTiempo(data.current.temp_c)
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+
+    }, [selectedLocalidad])
 
 
     //Trae los horarios disponibles.
@@ -182,7 +206,9 @@ const Index = () => {
                                     <div className="relative overflow-x-auto">
 
                                         <h5 className='py-4 text-center'>Predio disponible </h5>
-
+                                        <div>
+                                            Timepo Hoy en localidad seleccionada: {tiempo}
+                                        </div>
                                         <table className="text-xs  text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                             <thead className=''>
                                                 <tr className='bg-red-950'>

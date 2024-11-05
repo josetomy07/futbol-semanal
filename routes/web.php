@@ -8,6 +8,7 @@ use App\Http\Controllers\PrediosController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WeatherApi;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,6 +22,7 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/tiempo/{city}', [WeatherApi::class, 'index']);
 Route::get('/generateToken', [CuitSoapController::class, 'index']);
 Route::get('/cuit/{cuit}', [CuitSoapController::class, 'getCuit']);
 
