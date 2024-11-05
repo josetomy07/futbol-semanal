@@ -6,8 +6,6 @@ import 'react-calendar/dist/Calendar.css';
 import Mapbox from '@/Components/Mapbox';
 import { Modal, Popover } from 'flowbite-react';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { Inertia } from '@inertiajs/inertia';
-import axios from 'axios';
 
 
 const Index = () => {
@@ -21,13 +19,13 @@ const Index = () => {
 
     //Marca toda las fechas posteriores al dia en gris y habre el menu disponible
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const verDiponibilidad = (date) =>{
+    const verDiponibilidad = (date) => {
         setSelectedDate(date)
         setShowEquipo(true)
     }
 
     //Trae la informacion de las canchas
-    const[contador, setContador] = useState([]);
+    const [contador, setContador] = useState([]);
     useEffect(() => {
 
         const fetchContador = async () => {
@@ -110,7 +108,7 @@ const Index = () => {
     const pruebas = async (e) => {
         const tipoCancha = e.target.value;
 
-         console.log(canchasDisponibles);
+        console.log(canchasDisponibles);
 
         let mostrarBoton = false;
 
@@ -122,21 +120,21 @@ const Index = () => {
             //const hayTurno = Object.values(horarios).some(turno => turno > 0);
 
             //if (hayTurno) {
-           // mostrarBoton = true;
-           // break; // Si encontramos un turno, podemos salir del bucle
+            // mostrarBoton = true;
+            // break; // Si encontramos un turno, podemos salir del bucle
             //}
         }
 
         //return mostrarBoton;
     }
 
-   // console.log(selectedValue);
+    // console.log(selectedValue);
 
 
-   const [isVisible, setIsVisible] = useState(true);
+    const [isVisible, setIsVisible] = useState(true);
     const ocultarBoton = () => {
         setIsVisible(false);
-     };
+    };
 
     return (
 
@@ -154,7 +152,7 @@ const Index = () => {
                             type='button'
                             className='btn btn-primary position-absolute top-50 end-0 mr-6'
                             onClick={(e) => setShowToast('Disponibilidad', e.target.value)}
-                            >
+                        >
                             Disponibilidad
                         </button>
                     </div>
@@ -182,63 +180,63 @@ const Index = () => {
                     )}
 
                     {showEquipo && (
-                    <>
-                        <div className="mx-8 text-black bg-zinc-300 border border-b-gray-800 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <>
+                            <div className="mx-8 text-black bg-zinc-300 border border-b-gray-800 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 
-                            <div className="container">
+                                <div className="container">
 
-                                <div className="relative overflow-x-auto">
+                                    <div className="relative overflow-x-auto">
 
-                                    <h5 className='py-4 text-center'>Predio disponible </h5>
+                                        <h5 className='py-4 text-center'>Predio disponible </h5>
 
-                                    <table className="text-xs  text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                        <thead  className=''>
-                                            <tr className='bg-red-950'>
-                                            <th scope="col" className=''>
+                                        <table className="text-xs  text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            <thead className=''>
+                                                <tr className='bg-red-950'>
+                                                    <th scope="col" className=''>
 
-                                                <label htmlFor="underline_select" className="sr-only">Localidad</label>
-                                                <select
-                                                    value={selectedLocalidad || ''}
-                                                    onChange={handleLocalidadChange}
-                                                    className="bg-transparent border-0 border-b-2 text-white border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200"
-                                                    >
-                                                    <option value="" disabled>Localidad</option>
-                                                    {ciudad.map(location =>(
-                                                        <option
-                                                            className='text-black'
-                                                            key={location.localidad}
-                                                            value={location.localidad}
-                                                            >
-                                                            {location.localidad}
-                                                        </option>
-                                                    ))}
-                                                </select>
-
-                                            </th>
-                                            <th scope="col" className="px-8 py-3 text-white">Ubicación</th>
-                                            <th scope="col" className="px-6 py-3 text-white">Futbol 5</th>
-                                            <th scope="col" className="px-6 py-3 text-white">Futbol 8</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {datos.map(usuarios => (
-                                                <tr scope="col" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={usuarios.id}>
-
-                                                    <td className="px-2 py-2">
-                                                        <i className="fa-solid fa-futbol ico-soli" />
-                                                        {usuarios.nombre}
-                                                    </td>
-                                                    <td scope="col" className="px-2 py-2">
-                                                        <button
-                                                            type='button'
-                                                            className="px-4 py-2"
-                                                            value={usuarios.direccion || ''}
-                                                            onClick={confirmUserDeletion}
+                                                        <label htmlFor="underline_select" className="sr-only">Localidad</label>
+                                                        <select
+                                                            value={selectedLocalidad || ''}
+                                                            onChange={handleLocalidadChange}
+                                                            className="bg-transparent border-0 border-b-2 text-white border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200"
                                                         >
-                                                            <i className="fa-solid fa-map-location-dot ico-soli" />
-                                                            {usuarios.direccion}
-                                                        </button>
-                                                    </td>
+                                                            <option value="" disabled>Localidad</option>
+                                                            {ciudad.map(location => (
+                                                                <option
+                                                                    className='text-black'
+                                                                    key={location.localidad}
+                                                                    value={location.localidad}
+                                                                >
+                                                                    {location.localidad}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+
+                                                    </th>
+                                                    <th scope="col" className="px-8 py-3 text-white">Ubicación</th>
+                                                    <th scope="col" className="px-6 py-3 text-white">Futbol 5</th>
+                                                    <th scope="col" className="px-6 py-3 text-white">Futbol 8</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {datos.map(usuarios => (
+                                                    <tr scope="col" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={usuarios.id}>
+
+                                                        <td className="px-2 py-2">
+                                                            <i className="fa-solid fa-futbol ico-soli" />
+                                                            {usuarios.nombre}
+                                                        </td>
+                                                        <td scope="col" className="px-2 py-2">
+                                                            <button
+                                                                type='button'
+                                                                className="px-4 py-2"
+                                                                value={usuarios.direccion || ''}
+                                                                onClick={confirmUserDeletion}
+                                                            >
+                                                                <i className="fa-solid fa-map-location-dot ico-soli" />
+                                                                {usuarios.direccion}
+                                                            </button>
+                                                        </td>
 
                                                         <td scope="col" className="px-4 py-2 text-center">
 
@@ -254,22 +252,22 @@ const Index = () => {
 
                                                                             <ul className="grid w-full grid-cols-2 gap-2 mt-2">
 
-                                                                                {isVisible &&(
+                                                                                {isVisible && (
                                                                                     <li>
-                                                                                        <button type="radio" id="20:00" onClick={() => handleSelect(usuarios.id, '20:00')}  className="hidden peer" name="timetable" />
+                                                                                        <button type="radio" id="20:00" onClick={() => handleSelect(usuarios.id, '20:00')} className="hidden peer" name="timetable" />
                                                                                         <label htmlFor="20:00"
                                                                                             className="inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center bg-white border rounded-lg cursor-pointer text-blue-600 border-blue-600 dark:hover:text-white dark:border-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 hover:text-black peer-checked:text-black hover:bg-blue-500 dark:text-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:peer-checked:bg-blue-500"
-                                                                                            >
+                                                                                        >
                                                                                             20:00 PM
                                                                                         </label>
                                                                                     </li>
                                                                                 )}
 
                                                                                 <li>
-                                                                                    <button type="radio" id="21:00" onClick={() => handleSelect(usuarios.id, '21:00')}  className="hidden peer" name="timetable" />
+                                                                                    <button type="radio" id="21:00" onClick={() => handleSelect(usuarios.id, '21:00')} className="hidden peer" name="timetable" />
                                                                                     <label htmlFor="21:00"
                                                                                         className="inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center bg-white border rounded-lg cursor-pointer text-blue-600 border-blue-600 dark:hover:text-white dark:border-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 hover:text-black peer-checked:text-black hover:bg-blue-500 dark:text-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:peer-checked:bg-blue-500"
-                                                                                        >
+                                                                                    >
                                                                                         21:00 PM
                                                                                     </label>
                                                                                 </li>
@@ -277,15 +275,15 @@ const Index = () => {
                                                                                     <button type="radio" id="22:00" onClick={() => handleSelect(usuarios.id, '22:00')} className="hidden peer" name="timetable" />
                                                                                     <label htmlFor="22:00"
                                                                                         className="inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center bg-white border rounded-lg cursor-pointer text-blue-600 border-blue-600 dark:hover:text-white dark:border-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 hover:text-black peer-checked:text-black hover:bg-blue-500 dark:text-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:peer-checked:bg-blue-500"
-                                                                                        >
+                                                                                    >
                                                                                         22:00 PM
                                                                                     </label>
                                                                                 </li>
                                                                                 <li>
-                                                                                    <button type="radio" id="23:00" onClick={() => handleSelect(usuarios.id, '23:00')}  className="hidden peer" name="timetable" />
+                                                                                    <button type="radio" id="23:00" onClick={() => handleSelect(usuarios.id, '23:00')} className="hidden peer" name="timetable" />
                                                                                     <label htmlFor="23:00"
                                                                                         className="inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center bg-white border rounded-lg cursor-pointer text-blue-600 border-blue-600 dark:hover:text-white dark:border-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 hover:text-black peer-checked:text-black hover:bg-blue-500 dark:text-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:peer-checked:bg-blue-500"
-                                                                                        >
+                                                                                    >
                                                                                         23:00 PM
                                                                                     </label>
                                                                                 </li>
@@ -304,7 +302,7 @@ const Index = () => {
                                                                     value={'futbol 5'}
                                                                     onChange={() => togglePopover(usuarios.id)}
                                                                     onClick={pruebas}
-                                                                    >
+                                                                >
                                                                     <i className="fa-solid fa-clock ico-soli" />
                                                                     Futbol 5
                                                                 </button>
@@ -312,21 +310,21 @@ const Index = () => {
 
                                                         </td>
 
-                                                    <td scope="col" className="px-4 py-2 text-center">
-                                                        <i className="fa-solid fa-clock ico-soli" />
-                                                        Futbol 8
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
+                                                        <td scope="col" className="px-4 py-2 text-center">
+                                                            <i className="fa-solid fa-clock ico-soli" />
+                                                            Futbol 8
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
 
-                                    </table>
+                                        </table>
+
+                                    </div>
 
                                 </div>
-
                             </div>
-                        </div>
-                    </>
+                        </>
                     )}
 
                 </div>
@@ -341,7 +339,7 @@ const Index = () => {
                         type="button"
                         className='position-absolute top-50 end-0 mr-6 py-4 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white'
                         onClick={closeModal}
-                        >
+                    >
                         <i className="fa-solid fa-xmark ico-modal" />
                         <span className="sr-only">Close modal</span>
                     </button>

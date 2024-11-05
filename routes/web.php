@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlquilerController;
+use App\Http\Controllers\CuitSoapController;
 use App\Http\Controllers\JugadorController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PrediosController;
@@ -20,6 +21,8 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/generateToken', [CuitSoapController::class, 'index']);
+Route::get('/cuit/{cuit}', [CuitSoapController::class, 'getCuit']);
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
