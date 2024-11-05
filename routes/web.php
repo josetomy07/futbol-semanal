@@ -59,7 +59,7 @@ Route::prefix('/dashboard')->group( function(){
 //Solicitudes de fechas, devuelve los predios.
 Route::get('/Solicitud/hoy', [AlquilerController::class, 'contarCanchasAlquiladas'])->name('Solicitud.contarCanchasAlquiladas');
 Route::get('/Solicitud/{localidadId}', [AlquilerController::class, 'nombrePredio'])->name('Solicitud.nombrePredio');
-Route::post('/Solicitud/disponibles', [AlquilerController::class, 'predioAlquilado'])->name('Solicitud.predioAlquilado');
+Route::get('/disponibles', [AlquilerController::class, 'predioAlquilado'])->name('Solicitud.predioAlquilado');
 
 
 

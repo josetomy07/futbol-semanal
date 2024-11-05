@@ -17,6 +17,7 @@ const Crear = () => {
     }
 
     // habilita o deshabilita un input
+    /*
     const [habilitado, setHabilitado] = useState(false);
     useEffect(() => {
 
@@ -32,10 +33,11 @@ const Crear = () => {
             setHabilitado(false);
         }
 
-    }, [tipoFutbol]);
+    }, [tipoFutbol]);*/
 
 
      //Carga el formulario al servidor
+     /*
      const { data, setData, post} = useForm({
         jugador: user.name,
         email: user.email,
@@ -46,7 +48,7 @@ const Crear = () => {
         fecha: "",
         horario: "",
         reserva: "1"
-    })
+    })*/
 
 
     const submit = (e) => {
@@ -85,9 +87,7 @@ const Crear = () => {
                                     id="name"
                                     name="name"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    value={data.jugador}
-                                    onChange={(e) => setData('name', e.target.value)}
-                                    placeholder={user.name}
+
                                     disabled
                                 />
                             </div>
@@ -99,9 +99,7 @@ const Crear = () => {
                                     id="email"
                                     name="email"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    value={data.email}
-                                    onChange={(e) => setData('email', e.target.value)}
-                                    placeholder={user.email}
+
                                     disabled
                                 />
                             </div>
@@ -113,9 +111,7 @@ const Crear = () => {
                                     id="nombre"
                                     name="nombre"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    value={data.predio}
-                                    onChange={(e) => setData('nombre', e.target.value)}
-                                    placeholder={predioSelecionado.nombre}
+
                                     disabled
                                 />
                             </div>
@@ -126,8 +122,7 @@ const Crear = () => {
                                     name="futbol"
                                     id="futbol"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    value={tipoFutbol}
-                                    onChange={manejarCambio}
+
                                     >
                                     <option value="">Selecione</option>
                                     <option value="futbol 5">Futbol 5</option>
@@ -142,9 +137,7 @@ const Crear = () => {
                                     id="localiad"
                                     name="localidad"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    value={data.localidad}
-                                    onChange={(e) => setData('localidad', e.target.value)}
-                                    placeholder={predioSelecionado.localidad}
+
                                     disabled
                                 />
                             </div>
@@ -156,43 +149,9 @@ const Crear = () => {
                                     id="direccion"
                                     name="direccion"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    value={data.direccion}
-                                    onChange={(e) => setData('direccion', e.target.value)}
-                                    placeholder={predioSelecionado.direccion}
+
                                     disabled
                                 />
-                            </div>
-
-                            <div className="date-container">
-                                <label htmlFor="fecha" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-1">Fecha de Solicitud</label>
-                                <input
-                                    type='date'
-                                    name='fecha'
-                                    id="fecha"
-                                    className="custom-date-input bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    value={data.fecha}
-                                    onChange={(e) => setData('fecha',e.target.value)}
-                                    disabled={!habilitado}
-                                    />
-                            </div>
-
-                            <div>
-                                <label htmlFor="horario" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-1">Hora de Solicitud</label>
-                                <select
-                                    name="horario"
-                                    id="horario"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    value={data.horario}
-                                    onChange={(e) => setData('horario', e.target.value)}
-                                    disabled={!habilitado}
-                                    >
-                                    <option value="">Selecione</option>
-                                    <option value="20:00"> 20:00 - 21:00</option>
-                                    <option value="21:00"> 21:00 - 22:00</option>
-                                    <option value="22:00"> 22:00 - 23:00</option>
-                                    <option value="23:00"> 23:00 - 24:00</option>
-                                </select>
-
                             </div>
 
                         </div>

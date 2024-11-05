@@ -32,6 +32,7 @@ class AlquilerController extends Controller
      /**
      * Display a listing of the resource.
      */
+    /*
     public function contarCanchasAlquiladas()
     {
         $hoy = Carbon::today();
@@ -69,20 +70,26 @@ class AlquilerController extends Controller
 
             $nombre = $predio['predio'];
             $ubicacion = $predio['domicilio'];
-            //'total' => $predio['total'],
             $canchas = [
                 'futbol 5' => [
-                                20 =>$predio['futbol 5'],
-                                21 =>$predio['futbol 5'],
-                                22 =>$predio['futbol 5'],
-                                23 =>$predio['futbol 5'],
-                                ],
+                    20 => $predio['futbol 5'],
+                    21 => $predio['futbol 5'],
+                    22 => $predio['futbol 5'],
+                    23 => $predio['futbol 5'],
+                ],
                 'futbol 8' => [
-                                20 =>$predio['futbol 8'],
-                                21 =>$predio['futbol 8'],
-                                22 =>$predio['futbol 8'],
-                                23 =>$predio['futbol 8'],
-                                ],
+                    20 => $predio['futbol 8'],
+                    21 => $predio['futbol 8'],
+                    22 => $predio['futbol 8'],
+                    23 => $predio['futbol 8'],
+                ],
+            ];
+
+            // Agrega los datos al arreglo total
+            $totalDiponible[$nombre] = [
+                'nombre' => $nombre,
+                'ubicacion' => $ubicacion,
+                'canchas' => $canchas,
             ];
 
         }
@@ -141,10 +148,127 @@ class AlquilerController extends Controller
 
             }
         };
+        return response()->json([$totalDiponible]);
+    }
 
-        return response()->json(['totalDiponibles' => $totalDiponible]);
+
+     /**
+     * Display a listing of the resource.
+     */
+    public function predioAlquilado()
+    {
+        $hoy = Carbon::today();
+        $reservado = Alquiler::whereDate('fecha', '2024-11-4')
+                                ->select('predio', 'direccion', 'horario', 'futbol', DB::raw('SUM(COALESCE(reserva, 0)) as ocupadas'))
+                                ->groupBy('predio', 'direccion', 'horario', 'futbol')->get(); // Cambia 'fecha' por el nombre de tu columna
+
+
+        $predios = Predios::all();
+
+        $arregloPredio = $predios->map(function ($arrayPredios) {
+            return [
+                'id' => $arrayPredios->id,
+                'predio' => $arrayPredios->nombre, // Asegúrate de que 'nombre' sea el campo correcto
+                'domicilio' => $arrayPredios->direccion,
+                'futbol 5' => $arrayPredios->cinco,
+                'futbol 8' => $arrayPredios->ocho,
+            ];
+        });
+
+        $arregloReservado = $reservado->map(function ($arrayReservado) {
+            return [
+                'nombre' => $arrayReservado->predio, // Asegúrate de que 'nombre' sea el campo correcto
+                'ubicacion' => $arrayReservado->direccion,
+                'horas' => $arrayReservado->horario,
+                'futbol' => $arrayReservado->futbol,
+                'ocupadas'=> (int)$arrayReservado->ocupadas,
+            ];
+        });
+
+        $totalDiponible = []; //Obtengo arreglo legible de diponible
+
+        foreach ($arregloPredio as $predio) {
+
+            $nombre = $predio['predio'];
+            $canchas = [
+                'futbol 5' => [
+                    20 => $predio['futbol 5'],
+                    21 => $predio['futbol 5'],
+                    22 => $predio['futbol 5'],
+                    23 => $predio['futbol 5'],
+                ],
+                'futbol 8' => [
+                    20 => $predio['futbol 8'],
+                    21 => $predio['futbol 8'],
+                    22 => $predio['futbol 8'],
+                    23 => $predio['futbol 8'],
+                ],
+            ];
+
+            // Agrega los datos al arreglo total
+            $totalDiponible[$nombre] = [
+                'canchas' => $canchas,
+            ];
+
+        }
+
+        $totalOcupadas = []; //Obtengo arreglo legible de ocupadas
+
+        foreach ($arregloReservado as $reserva) {
+
+            $nombre = $reserva['nombre'];
+            $hora = $reserva['horas'];
+            $tipo = $reserva['futbol'];
+
+            if (isset($totalDiponible[$nombre])) {
+
+                $totalOcupadas[$nombre]['canchas'][$tipo][$hora] = $reserva['ocupadas'];
+            }
+        }
+
+        $turnos = [20, 21, 22, 23];
+
+        foreach ($totalDiponible as $nombrePredio => &$info) {
+
+            if (isset($totalOcupadas[$nombrePredio])) { //Obtengo las cacnhas que fueron alquiladas.
+
+                foreach($info as $canchas => &$futbol ){ //Traes las canchas para saber si tiene disponibilidad el predios en la vairable futbol
+
+                    if (isset($totalOcupadas[$nombrePredio][$canchas])) { //De vuelve la cantidad de canchas que se alquilaron por futbol
+
+                        $alquiladasCantidadPorHora = []; // Inicializar la cantidad de canchas alquiladas
+
+                        foreach ($totalOcupadas[$nombrePredio][$canchas] as $canchasReservada => $cantidad) {  // Recorre las reservas para obtener la cantidad de canchas alquiladas por hora
+
+                            $alquiladasCantidadPorHora[$canchasReservada] = $cantidad;
+                        };
+
+                        foreach ($turnos as $turno) {
+
+                            if (isset($futbol[$canchasReservada][$turno])) { // Solo restar si hay reservas para esa hora
+
+                                if (isset($alquiladasCantidadPorHora[$canchasReservada][$turno])) {
+
+                                    $futbol[$canchasReservada][$turno] = max(0, $futbol[$canchasReservada][$turno] - $alquiladasCantidadPorHora[$canchasReservada][$turno]);  // Restar solo en la hora de alquiler
+
+                                } else {
+
+                                    // Mantener el valor original para otros turnos sin reservas
+
+                                    $futbol[$canchasReservada][$turno] = $futbol[$canchasReservada][$turno];
+                                };
+                            };
+                        };
+                    };
+                };
+
+            };
+        };
+
+        return response()->json($totalDiponible);
 
     }
+
 
 
     /**

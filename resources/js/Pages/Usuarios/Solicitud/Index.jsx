@@ -26,21 +26,19 @@ const Index = () => {
 
     //Trae la informacion de las canchas
     const [contador, setContador] = useState([]);
+    const [datoActual, setDatoActual] = useState({});
     useEffect(() => {
 
         const fetchContador = async () => {
 
-            const response = await fetch('/Solicitud/hoy');
+            const response = await fetch('/disponibles');
             const data = await response.json();
 
-            setContador(data)
-
-        }
+            setDatoActual(data)
+        };
 
         fetchContador();
     }, []);
-
-    console.log(contador);
 
 
     //De vuelve los predios disponible
@@ -81,55 +79,49 @@ const Index = () => {
     };
     const closeModal = () => {
         setConfirmingUserDeletion(false);
-
-        //clearErrors();
-        //reset();
-    };
-
-
-    // //Retorna una hora
-    const [isPopoverOpen, setIsPopoverOpen] = useState({});
-    const togglePopover = (id) => {
-        setIsPopoverOpen((prev) => ({ ...prev, [id]: !prev[id] }));
     };
 
     const [selectedValue, setSelectedValue] = useState({});
     const handleSelect = (id, value) => {
         setSelectedValue((prev) => ({ ...prev, [id]: value }));
-        setIsPopoverOpen((prev) => ({ ...prev, [id]: false })); // Cierra el Popover específico
     };
 
 
+    //Trae los horarios disponibles.
+    const [horaDisponible, setHoraDisponibles] = useState([]);
+    const handleButtonClick = (nombre, tipo) => {
+        const horas = [];
 
-    //const canchasDisponibles = contador.totalDiponibles.canchas;
-    //const botonHabilitado = verificarDisponibilidad(canchasDisponibles);
+        for (const nomPredio in datoActual) {
+            if (nomPredio === nombre) {
 
-    const [habilitado, setHabilitado] = useState();
-    const pruebas = async (e) => {
-        const tipoCancha = e.target.value;
+                for (const cancha in datoActual[nombre]) { // Iteramos sobre las canchas de cada predio
+                    const futbol = datoActual[nombre][cancha]; // Obtenemos los horarios disponibles para esa cancha
 
-        console.log(canchasDisponibles);
+                    // Iteramos sobre futbol 5 y futbol 8
+                    for (const tipoFutbol in futbol) {
+                        for (const hora in futbol[tipoFutbol]) {
+                            const horarios = futbol[tipoFutbol][hora];
+                            if (horarios > 0) {
+                                const futboltipo = tipoFutbol;
 
-        let mostrarBoton = false;
+                                if (futboltipo === tipo && tipo === 'futbol 5') {
+                                    horas.push({ hora: hora })
+                                };
 
-        for (const cancha in tipoCancha) {
-            const horarios = tipoCancha[cancha];
+                                if (futboltipo === tipo && tipo === 'futbol 8') {
+                                    horas.push({ hora: hora })
+                                }
 
-            console.log(horarios);
-            // Verificamos si hay algún horario disponible
-            //const hayTurno = Object.values(horarios).some(turno => turno > 0);
+                            }
+                        };
+                    };
+                };
+            };
+        };
 
-            //if (hayTurno) {
-            // mostrarBoton = true;
-            // break; // Si encontramos un turno, podemos salir del bucle
-            //}
-        }
-
-        //return mostrarBoton;
-    }
-
-    // console.log(selectedValue);
-
+        setHoraDisponibles(horas);
+    };
 
     const [isVisible, setIsVisible] = useState(true);
     const ocultarBoton = () => {
@@ -141,6 +133,8 @@ const Index = () => {
         <AuthenticatedLayout>
 
             <Head />
+
+
 
             <div className=" container py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -219,29 +213,29 @@ const Index = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {datos.map(usuarios => (
-                                                    <tr scope="col" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={usuarios.id}>
+                                                {datos.map(predioDisp => (
+                                                    <tr scope="col" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={predioDisp.id}>
 
                                                         <td className="px-2 py-2">
                                                             <i className="fa-solid fa-futbol ico-soli" />
-                                                            {usuarios.nombre}
+                                                            {predioDisp.nombre}
                                                         </td>
                                                         <td scope="col" className="px-2 py-2">
                                                             <button
                                                                 type='button'
                                                                 className="px-4 py-2"
-                                                                value={usuarios.direccion || ''}
+                                                                value={predioDisp.direccion || ''}
                                                                 onClick={confirmUserDeletion}
                                                             >
                                                                 <i className="fa-solid fa-map-location-dot ico-soli" />
-                                                                {usuarios.direccion}
+                                                                {predioDisp.direccion}
                                                             </button>
                                                         </td>
 
                                                         <td scope="col" className="px-4 py-2 text-center">
 
                                                             <Popover
-                                                                onClose={() => togglePopover(usuarios.id)}
+                                                                onClose={() => togglePopover(predioDisp.id)}
                                                                 aria-labelledby="profile-popover"
                                                                 content={
                                                                     <div className="w-64 p-3">
@@ -251,47 +245,21 @@ const Index = () => {
                                                                         <div className="mb-2 flex items-center justify-between">
 
                                                                             <ul className="grid w-full grid-cols-2 gap-2 mt-2">
-
-                                                                                {isVisible && (
-                                                                                    <li>
-                                                                                        <button type="radio" id="20:00" onClick={() => handleSelect(usuarios.id, '20:00')} className="hidden peer" name="timetable" />
-                                                                                        <label htmlFor="20:00"
+                                                                                {horaDisponible.map((item, index) =>
+                                                                                    <li key={index}>
+                                                                                        <button type="radio" id={item.hora} onClick={() => handleSelect(predioDisp.id, item.hora)} className="hidden peer" name="timetable" />
+                                                                                        <label htmlFor={item.hora}
                                                                                             className="inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center bg-white border rounded-lg cursor-pointer text-blue-600 border-blue-600 dark:hover:text-white dark:border-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 hover:text-black peer-checked:text-black hover:bg-blue-500 dark:text-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:peer-checked:bg-blue-500"
                                                                                         >
-                                                                                            20:00 PM
+                                                                                            {item.hora}
                                                                                         </label>
                                                                                     </li>
                                                                                 )}
-
-                                                                                <li>
-                                                                                    <button type="radio" id="21:00" onClick={() => handleSelect(usuarios.id, '21:00')} className="hidden peer" name="timetable" />
-                                                                                    <label htmlFor="21:00"
-                                                                                        className="inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center bg-white border rounded-lg cursor-pointer text-blue-600 border-blue-600 dark:hover:text-white dark:border-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 hover:text-black peer-checked:text-black hover:bg-blue-500 dark:text-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:peer-checked:bg-blue-500"
-                                                                                    >
-                                                                                        21:00 PM
-                                                                                    </label>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <button type="radio" id="22:00" onClick={() => handleSelect(usuarios.id, '22:00')} className="hidden peer" name="timetable" />
-                                                                                    <label htmlFor="22:00"
-                                                                                        className="inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center bg-white border rounded-lg cursor-pointer text-blue-600 border-blue-600 dark:hover:text-white dark:border-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 hover:text-black peer-checked:text-black hover:bg-blue-500 dark:text-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:peer-checked:bg-blue-500"
-                                                                                    >
-                                                                                        22:00 PM
-                                                                                    </label>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <button type="radio" id="23:00" onClick={() => handleSelect(usuarios.id, '23:00')} className="hidden peer" name="timetable" />
-                                                                                    <label htmlFor="23:00"
-                                                                                        className="inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center bg-white border rounded-lg cursor-pointer text-blue-600 border-blue-600 dark:hover:text-white dark:border-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 hover:text-black peer-checked:text-black hover:bg-blue-500 dark:text-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:peer-checked:bg-blue-500"
-                                                                                    >
-                                                                                        23:00 PM
-                                                                                    </label>
-                                                                                </li>
                                                                             </ul>
                                                                         </div>
 
                                                                         <PrimaryButton>
-                                                                            <Link href="#">Reservar</Link>
+                                                                            <Link href={route('Solicitud.show', predioDisp.nombre)}>Reservar</Link>
                                                                         </PrimaryButton>
 
                                                                     </div>
@@ -299,20 +267,57 @@ const Index = () => {
                                                             >
                                                                 <button
                                                                     type="button"
-                                                                    value={'futbol 5'}
-                                                                    onChange={() => togglePopover(usuarios.id)}
-                                                                    onClick={pruebas}
+                                                                    onClick={() => handleButtonClick(predioDisp.nombre, 'futbol 5')}
                                                                 >
                                                                     <i className="fa-solid fa-clock ico-soli" />
-                                                                    Futbol 5
+                                                                    {selectedValue.id}
                                                                 </button>
                                                             </Popover>
 
                                                         </td>
 
                                                         <td scope="col" className="px-4 py-2 text-center">
-                                                            <i className="fa-solid fa-clock ico-soli" />
-                                                            Futbol 8
+
+                                                            <Popover
+                                                                onClose={() => togglePopover(predioDisp.id)}
+                                                                aria-labelledby="profile-popover"
+                                                                content={
+                                                                    <div className="w-64 p-3">
+
+                                                                        <p>Horario Disponible</p>
+
+                                                                        <div className="mb-2 flex items-center justify-between">
+
+                                                                            <ul className="grid w-full grid-cols-2 gap-2 mt-2">
+                                                                                {horaDisponible.map((item, index) =>
+                                                                                    <li key={index}>
+                                                                                        <button type="radio" id={item.hora} onClick={() => handleSelect(predioDisp.id, item.hora)} className="hidden peer" name="timetable" />
+                                                                                        <label htmlFor={item.hora}
+                                                                                            className="inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center bg-white border rounded-lg cursor-pointer text-blue-600 border-blue-600 dark:hover:text-white dark:border-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 hover:text-black peer-checked:text-black hover:bg-blue-500 dark:text-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:peer-checked:bg-blue-500"
+                                                                                        >
+                                                                                            {item.hora}
+                                                                                        </label>
+                                                                                    </li>
+                                                                                )}
+                                                                            </ul>
+                                                                        </div>
+
+                                                                        <PrimaryButton>
+                                                                            <Link href={route('Solicitud.show', predioDisp.nombre)}>Reservar</Link>
+                                                                        </PrimaryButton>
+
+                                                                    </div>
+                                                                }
+                                                            >
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleButtonClick(predioDisp.nombre, 'futbol 8')}
+                                                                >
+                                                                    <i className="fa-solid fa-clock ico-soli" />
+                                                                    {selectedValue.id}
+                                                                </button>
+                                                            </Popover>
+
                                                         </td>
                                                     </tr>
                                                 ))}
