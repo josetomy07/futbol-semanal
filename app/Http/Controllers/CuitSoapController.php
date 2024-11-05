@@ -130,7 +130,7 @@ class CuitSoapController extends Controller
 
             // Call the store method on the controller
             $errorLogController->store($request);
-            return response($error, 500);
+            return response(json_encode(["error" => $error], JSON_PRETTY_PRINT), 500);
         }
         if (!file_exists(PRIVATEKEY)) {
             $error = "Failed to open " . PRIVATEKEY . "\n";
@@ -142,7 +142,7 @@ class CuitSoapController extends Controller
 
             // Call the store method on the controller
             $errorLogController->store($request);
-            return response($error, 500);
+            return response(json_encode(["error" => $error], JSON_PRETTY_PRINT), 500);
         }
         if (!file_exists(WSDL)) {
             $error = "Failed to open " . WSDL . "\n";
@@ -154,7 +154,7 @@ class CuitSoapController extends Controller
 
             // Call the store method on the controller
             $errorLogController->store($request);
-            return response($error, 500);
+            return response(json_encode(["error" => $error], JSON_PRETTY_PRINT), 500);
         }
         try {
             CreateTRA('ws_sr_constancia_inscripcion');
@@ -171,7 +171,7 @@ class CuitSoapController extends Controller
 
             // Call the store method on the controller
             $errorLogController->store($request);
-            return response($error, 500);
+            return response(json_encode(["error" => $error], JSON_PRETTY_PRINT), 500);
         }
 
         // Check if XML was parsed successfully
@@ -185,7 +185,7 @@ class CuitSoapController extends Controller
 
             // Call the store method on the controller
             $errorLogController->store($request);
-            return response($error, 500);
+            return response(json_encode(["error" => $error], JSON_PRETTY_PRINT), 500);
         }
         if (!file_put_contents("TA.xml", $TA)) {
             $error = "Was not able to create TA.xml";
@@ -197,7 +197,7 @@ class CuitSoapController extends Controller
 
             // Call the store method on the controller
             $errorLogController->store($request);
-            return response($error, 500);
+            return response(json_encode(["error" => $error], JSON_PRETTY_PRINT), 500);
         }
 
         // Access the token and sign elements
@@ -226,7 +226,9 @@ class CuitSoapController extends Controller
         error_reporting(E_ALL);
         $soapController = new SoapTokenController();
         $data = $soapController->getToken();
-
+        if (count($data) < 0) {
+            $this->index();
+        }
         $token = $data[0]->token;
         $sign = $data[0]->sign;
         $expiration = $data[0]->expiration;
@@ -276,7 +278,7 @@ class CuitSoapController extends Controller
 
                 // Call the store method on the controller
                 $errorLogController->store($request);
-                return response($error, 500);
+                return response(json_encode(["error" => $error], JSON_PRETTY_PRINT), 500);
             }
         } catch (SoapFault $e) {
             // print_r($e);
@@ -292,7 +294,7 @@ class CuitSoapController extends Controller
 
             // Call the store method on the controller
             $errorLogController->store($request);
-            return response($error, 500);
+            return response(json_encode(["error" => $error], JSON_PRETTY_PRINT), 200);
         }
     }
 }
