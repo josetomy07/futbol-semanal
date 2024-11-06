@@ -282,7 +282,7 @@ const Index = () => {
                                                                     </div>
 
                                                                     <PrimaryButton>
-                                                                        <Link href={route('Solicitud.show', predioDisp.nombre)}>Reservar</Link>
+                                                                        <Link href="{{route('Solicitud.show', ['id' => $predioDisp->id]) }}?nombre={{ $predioDisp->nombre }}&estado={{ $predioDisp->estado }}">Reservar</Link>
                                                                     </PrimaryButton>
 
                                                                 </div>
