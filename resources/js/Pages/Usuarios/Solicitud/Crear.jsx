@@ -56,7 +56,7 @@ function UnsplashSearch() {
                             />
                         ))
                     ) : (
-                        <p type="text" style={{ display: 'none' }}>No results found</p>
+                        <p type="text" style={{ display: 'none' }}>el resultado no funciona</p>
                     )}
                 </div>
 
