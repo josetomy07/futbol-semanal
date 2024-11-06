@@ -7,6 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\PrediosController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\UnsplashController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WeatherApi;
 use Illuminate\Foundation\Application;
@@ -64,27 +65,11 @@ Route::get('/Solicitud/{localidadId}', [AlquilerController::class, 'nombrePredio
 Route::get('/disponibles', [AlquilerController::class, 'predioAlquilado'])->name('Solicitud.predioAlquilado');
 
 
+Route::get('/api/unsplash/search', [UnsplashController::class, 'search']);
+
 
 
 require __DIR__.'/auth.php';
 
 
 
-/*
-Route::middleware(['auth', 'Jugador'])->group(function () {
-    Route::get('/Jugador', [JugadorController::class, 'index'])->name('Jugador.Dashjugador');
-});
-*/
-
-/*
-Route::group(['prefix' => 'Jugador', 'middleware' => ['auth']], function () {
-    Route::get('/dashboard', [JugadorController::class, 'index'])->name('Jugador.Dashjugador');
-});
-*/
-
-/*
-Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard'); // Dashboard de admin
-    })->name('dashboard');
-});*/

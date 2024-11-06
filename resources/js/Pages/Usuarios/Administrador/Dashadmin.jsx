@@ -43,6 +43,14 @@ const Dashadmin = () => {
                         </div>
                     </div>
                 </div>
+                <div className="col-sm-4">
+                    <div className="card text-center mb-3">
+                        <div className="card-body">
+                            <h5 className="card-title">Post de Imagenes</h5>
+                            <PrimaryButton><Link href={route('Solicitud.show', user.name )}>Ver Post</Link></PrimaryButton>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </AuthenticatedLayout>
