@@ -66,11 +66,23 @@ class CuitSoapController extends Controller
         #==============================================================================
         function CallWSAA($CMS)
         {
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            error_reporting(E_ALL);
             $client = new SoapClient(WSDL, array(
                 'soap_version'   => SOAP_1_2,
                 'location'       => URL,
                 'trace'          => 1,
-                'exceptions'     => 0
+                'exceptions'     => 0,
+                'stream_context' => stream_context_create([
+                    'ssl' => [
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                    ],
+                    'http' => [
+                        'header' => "Content-Type: application/xml; charset=utf-8",
+                    ],
+                ]),
             ));
             $results = $client->loginCms(array('in0' => $CMS));
             file_put_contents("request-loginCms.xml", $client->__getLastRequest());
@@ -226,8 +238,10 @@ class CuitSoapController extends Controller
         error_reporting(E_ALL);
         $soapController = new SoapTokenController();
         $data = $soapController->getToken();
-        if (count($data) < 0) {
+        if (count($data) == 0) {
             $this->index();
+            $data = $soapController->getToken();
+            exit();
         }
         $token = $data[0]->token;
         $sign = $data[0]->sign;
@@ -238,7 +252,16 @@ class CuitSoapController extends Controller
                 'soap_version'   => SOAP_1_1,
                 'location'       => 'https://awshomo.afip.gov.ar/sr-padron/webservices/personaServiceA5',
                 'trace'          => true,
-                'exceptions'     => true
+                'exceptions'     => true,
+                'stream_context' => stream_context_create([
+                    'ssl' => [
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                    ],
+                    'http' => [
+                        'header' => "Content-Type: application/xml; charset=utf-8",
+                    ],
+                ]),
             ));
 
             $params = [
@@ -282,7 +305,7 @@ class CuitSoapController extends Controller
             }
         } catch (SoapFault $e) {
             // print_r($e);
-            // echo "Request :\n" . htmlspecialchars($client->__getLastRequest()) . "\n";
+            // echo "Request :\n" . $client->__getLastRequest() . "\n";
             // echo "Response:\n" . htmlspecialchars($client->__getLastResponse()) . "\n";
             // echo "Error: " . $e->getMessage();
             $error = "SOAP Error: " . $e->getMessage();
