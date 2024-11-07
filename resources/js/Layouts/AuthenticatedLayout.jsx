@@ -1,36 +1,90 @@
 import { useState } from 'react';
-import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 
 export default function Authenticated({ header, children }) {
+
+    const { auth } = usePage().props;
     const user = usePage().props.auth.user;
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
+    const dashboardRoute =
+    auth.roles[0] === 'superadmin' ? route('dashboard') :
+    auth.roles[0] === 'jugador' ? route('Jugador.Dashjugador') :
+    auth.roles[0] === 'predio' ? route('Predio.Dashpredios'):
+    '/';
+
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+
+        <div className="min-h-screen bg-slate-50 dark:bg-gray-900">
+
+            <nav className="bg-gray-200 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
 
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                                    <i id="house" className="bi bi-house-door"></i>
                                 </Link>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                    Home
-                                </NavLink>
+
+                            <div className="hidden sm:flex sm:items-center space-x-4 sm:-my-px sm:ms-5">
+                                <div className="ms-3 relative">
+                                    <Link href={dashboardRoute}
+                                        type="button"
+                                        className="flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white dark:text-slate-50 bg-gray-500 dark:bg-gray-900 focus:outline-none transition ease-in-out duration-150"
+                                        >
+                                        Inicio
+                                    </Link>
+                                </div>
                             </div>
+
+                            {auth.roles.includes('jugador') && (
+                                <div className="hidden sm:flex sm:items-center">
+                                    <div className="ms-3 relative">
+                                        <button
+                                            type="button"
+                                            className="flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white dark:text-slate-50 bg-sky-800 dark:bg-sky-900 focus:outline-none transition ease-in-out duration-150"
+                                            >
+                                            Ver Solicitud
+                                        </button>
+                                    </div>
+                                    <div className="ms-3 relative">
+                                        <button
+                                            type="button"
+                                            className="flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white dark:text-slate-50 bg-sky-800 dark:bg-sky-900 focus:outline-none transition ease-in-out duration-150"
+                                            >
+                                            Conocimientos
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
+
+                            <div className="ms-3 relative">
+                                <button
+                                    type="button"
+                                    className="flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white dark:text-slate-50 bg-sky-800 dark:bg-sky-900 focus:outline-none transition ease-in-out duration-150"
+                                    >
+                                    <i className="bi bi-info-square"></i>
+                                </button>
+                            </div>
+
+                            <div className="ms-2 relative">
+                                <button
+                                    type="button"
+                                    className="flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white dark:text-slate-50 bg-emerald-900 dark:bg-emerald-900 hover:text-white dark:hover:text-slate-50 focus:outline-none transition ease-in-out duration-150"
+                                    >
+                                    <Link href={route('Solicitud.index')}>Nueva Solicitud </Link>
+                                </button>
+                            </div>
 
                             <div className="ms-3 relative">
                                 <Dropdown>
@@ -38,9 +92,9 @@ export default function Authenticated({ header, children }) {
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
+                                                className="flex items-center px-3 py-2 justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600"
                                             >
-                                                {user.name}
+                                                FS
 
                                                 <svg
                                                     className="ms-2 -me-0.5 h-4 w-4"
@@ -91,13 +145,14 @@ export default function Authenticated({ header, children }) {
                                 </svg>
                             </button>
                         </div>
+
                     </div>
                 </div>
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                            Dashboard
+                        <ResponsiveNavLink href={dashboardRoute}>
+                            New Perfil
                         </ResponsiveNavLink>
                     </div>
 

@@ -1,16 +1,33 @@
-import './bootstrap';
 import '../css/app.css';
+import 'flowbite';
+import '../../public/css/bootstrap.min.css';
+import 'owl.carousel/dist/assets/owl.carousel.min.css';
+import 'owl.carousel/dist/assets/owl.theme.default.min.css';
+import '../../public/css/magnific-popup.css';
+import 'slicknav/dist/slicknav.min.css';
+
+import 'bootstrap/dist/js/bootstrap.min.js';
+import 'mixitup/dist/mixitup.min.js';
+import 'slicknav/dist/jquery.slicknav.min.js';
+import 'owl.carousel/dist/owl.carousel.min.js';
+import '../css/Estilos/style.css';
+
+
 
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
+
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+
 createInertiaApp({
+
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob('./Pages/**/*.jsx')),
-    setup({ el, App, props }) {
+    setup({ el, App, props}) {
         const root = createRoot(el);
 
         root.render(<App {...props} />);
@@ -19,3 +36,5 @@ createInertiaApp({
         color: '#4B5563',
     },
 });
+
+

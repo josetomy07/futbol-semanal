@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\UnsplashService;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Vite;
@@ -14,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(UnsplashService::class, function ($app) {
+            return new UnsplashService();
+        });
     }
 
     /**

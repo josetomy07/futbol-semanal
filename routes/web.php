@@ -1,9 +1,15 @@
 <?php
 
+use App\Http\Controllers\AlquilerController;
+use App\Http\Controllers\CuitSoapController;
+use App\Http\Controllers\JugadorController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PrediosController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\UnsplashController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WeatherApi;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,10 +23,25 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/tiempo/{city}', [WeatherApi::class, 'index']);
+Route::get('/generateToken', [CuitSoapController::class, 'index']);
+Route::get('/cuit/{cuit}', [CuitSoapController::class, 'getCuit']);
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+//dashboard jugador
+Route::prefix('/Jugador')->group( function(){
+    Route::get('/dashboard', [JugadorController::class, 'index'])->name('Jugador.Dashjugador');
+});
+
+//dashboard Predios
+Route::prefix('/Predio')->group( function(){
+    Route::get('/dashboard', [PrediosController::class, 'index'])->name('Predio.Dashpredios');
+});
+
+//Edita perfil de usuario
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -28,10 +49,27 @@ Route::middleware('auth')->group(function () {
 });
 
 
+//Majador de roles y permisos
 Route::prefix('/dashboard')->group( function(){
     Route::resource('Roles', RolesController::class);
-    Route::resource('usuarios', UserController::class);
+    Route::resource('Usuarios/Administrador', UserController::class);
     Route::resource('post', PostController::class);
+    Route::resource('Solicitud', AlquilerController::class);
+    Route::resource('Predio', PrediosController::class);
 });
 
+
+//Solicitudes de fechas, devuelve los predios.
+Route::get('/Solicitud/hoy', [AlquilerController::class, 'contarCanchasAlquiladas'])->name('Solicitud.contarCanchasAlquiladas');
+Route::get('/Solicitud/{localidadId}', [AlquilerController::class, 'nombrePredio'])->name('Solicitud.nombrePredio');
+Route::get('/disponibles', [AlquilerController::class, 'predioAlquilado'])->name('Solicitud.predioAlquilado');
+
+
+Route::get('/api/unsplash/search', [UnsplashController::class, 'search']);
+
+
+
 require __DIR__.'/auth.php';
+
+
+
